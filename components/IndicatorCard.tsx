@@ -66,6 +66,8 @@ export function IndicatorCard({
               {codigo === 'dolar_intercambio' && (
                 <span
                   className="flex-none text-accent"
+                  role="img"
+                  aria-label="Historico, sin actualizacion desde 2014"
                   title="Historico, sin actualizacion desde 2014"
                 >
                   †
