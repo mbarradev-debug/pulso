@@ -3,14 +3,12 @@
 import { formatCLP, formatPorcentaje } from '@/lib/format';
 import { FavoritesToggle } from '@/components/FavoritesToggle';
 import { Skeleton } from '@/components/Skeleton';
-import { VariationBadge } from '@/components/VariationBadge';
 import { useFavoritos } from '@/hooks/useFavoritos';
 import type { Indicador, IndicadorCodigo } from '@/types/indicador';
 
 interface IndicatorCardProps {
   codigo: IndicadorCodigo;
   indicador?: Indicador;
-  variacion?: number;
   error?: boolean;
   isLoading?: boolean;
   seleccionado?: boolean;
@@ -29,7 +27,6 @@ function formatValor(indicador: Indicador): string {
 export function IndicatorCard({
   codigo,
   indicador,
-  variacion,
   error,
   isLoading,
   seleccionado,
@@ -87,22 +84,16 @@ export function IndicatorCard({
       {isLoading ? (
         <div className="mt-3">
           <Skeleton className="mb-2 h-4 w-24" />
-          <div className="mt-2 flex items-baseline justify-between gap-2">
-            <Skeleton className="h-6 w-16" />
-            <Skeleton className="h-5 w-14 rounded-pill" />
-          </div>
+          <Skeleton className="mt-2 h-6 w-16" />
         </div>
       ) : noDisponible ? (
         <p className="mt-3 text-sm text-foreground-secondary">Dato no disponible</p>
       ) : (
         <div className="animate-fade-in">
           <p className="mt-1 truncate text-sm text-foreground">{indicador!.nombre}</p>
-          <div className="mt-2 flex items-baseline justify-between gap-2">
-            <span className="mono text-lg font-semibold text-foreground">
-              {formatValor(indicador!)}
-            </span>
-            <VariationBadge value={variacion ?? 0} />
-          </div>
+          <span className="mono mt-2 block text-lg font-semibold text-foreground">
+            {formatValor(indicador!)}
+          </span>
         </div>
       )}
     </div>
