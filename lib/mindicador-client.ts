@@ -15,13 +15,16 @@ export class MindicadorApiError extends Error {
   }
 }
 
-async function fetchJson<T>(url: string): Promise<T> {
+async function fetchJson<T>(url: string, options?: { revalidate?: number }): Promise<T> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   let response: Response;
   try {
-    response = await fetch(url, { signal: controller.signal });
+    response = await fetch(url, {
+      signal: controller.signal,
+      ...(options?.revalidate !== undefined && { next: { revalidate: options.revalidate } }),
+    });
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
       throw new MindicadorApiError(`Tiempo de espera agotado al consultar ${url}`, url);
@@ -45,10 +48,14 @@ async function fetchJson<T>(url: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-export function getSnapshot(): Promise<IndicadoresSnapshot> {
-  return fetchJson<IndicadoresSnapshot>(BASE_URL);
+export function getSnapshot(options?: { revalidate?: number }): Promise<IndicadoresSnapshot> {
+  return fetchJson<IndicadoresSnapshot>(BASE_URL, options);
 }
 
-export function getHistorico(codigo: IndicadorCodigo, anio: number): Promise<SerieHistorica> {
-  return fetchJson<SerieHistorica>(`${BASE_URL}/${codigo}/${anio}`);
+export function getHistorico(
+  codigo: IndicadorCodigo,
+  anio: number,
+  options?: { revalidate?: number },
+): Promise<SerieHistorica> {
+  return fetchJson<SerieHistorica>(`${BASE_URL}/${codigo}/${anio}`, options);
 }
