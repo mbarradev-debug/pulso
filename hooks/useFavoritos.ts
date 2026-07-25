@@ -46,8 +46,10 @@ function getSnapshot(): IndicadorCodigo[] {
   return cache;
 }
 
+const EMPTY_FAVORITOS: IndicadorCodigo[] = [];
+
 function getServerSnapshot(): IndicadorCodigo[] {
-  return [];
+  return EMPTY_FAVORITOS;
 }
 
 function subscribe(onStoreChange: () => void) {

@@ -1,14 +1,24 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Button } from '@/components/Button';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { Skeleton } from '@/components/Skeleton';
+import { useFavoritos } from '@/hooks/useFavoritos';
 import { useIndicadores } from '@/hooks/useIndicadores';
 import { formatFecha } from '@/lib/format';
 import { INDICADOR_CODIGOS } from '@/types/indicador';
 
 export function DashboardHome() {
   const { data, isLoading, error } = useIndicadores();
+  const { favoritos } = useFavoritos();
+
+  const codigosOrdenados = useMemo(() => {
+    const favSet = new Set(favoritos);
+    const favs = INDICADOR_CODIGOS.filter((codigo) => favSet.has(codigo));
+    const resto = INDICADOR_CODIGOS.filter((codigo) => !favSet.has(codigo));
+    return [...favs, ...resto];
+  }, [favoritos]);
 
   return (
     <div className="container mx-auto max-w-6xl px-6 py-8">
@@ -40,7 +50,7 @@ export function DashboardHome() {
           </p>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4">
-            {INDICADOR_CODIGOS.map((codigo) =>
+            {codigosOrdenados.map((codigo) =>
               isLoading && !data ? (
                 <div key={codigo} className="rounded border border-border bg-surface p-4">
                   <Skeleton className="mb-3 h-3 w-16" />

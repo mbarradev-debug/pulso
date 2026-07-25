@@ -1,7 +1,9 @@
 'use client';
 
 import { formatCLP, formatPorcentaje } from '@/lib/format';
+import { FavoritesToggle } from '@/components/FavoritesToggle';
 import { VariationBadge } from '@/components/VariationBadge';
+import { useFavoritos } from '@/hooks/useFavoritos';
 import type { Indicador, IndicadorCodigo } from '@/types/indicador';
 
 interface IndicatorCardProps {
@@ -22,16 +24,20 @@ function formatValor(indicador: Indicador): string {
 
 export function IndicatorCard({ codigo, indicador, variacion, error }: IndicatorCardProps) {
   const noDisponible = error || !indicador;
+  const { esFavorito, toggleFavorito } = useFavoritos();
 
   return (
     <div className="rounded border border-border bg-surface p-4">
-      <div className="mono flex items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
-        <span>{codigo}</span>
-        {codigo === 'dolar_intercambio' && (
-          <span className="text-accent" title="Historico, sin actualizacion desde 2014">
-            †
-          </span>
-        )}
+      <div className="flex items-center justify-between">
+        <div className="mono flex items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
+          <span>{codigo}</span>
+          {codigo === 'dolar_intercambio' && (
+            <span className="text-accent" title="Historico, sin actualizacion desde 2014">
+              †
+            </span>
+          )}
+        </div>
+        <FavoritesToggle activo={esFavorito(codigo)} onToggle={() => toggleFavorito(codigo)} />
       </div>
 
       {noDisponible ? (
