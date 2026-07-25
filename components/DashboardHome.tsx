@@ -1,17 +1,21 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/Button';
+import { Converter } from '@/components/Converter';
+import { HistoryChart } from '@/components/HistoryChart';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { Skeleton } from '@/components/Skeleton';
 import { useFavoritos } from '@/hooks/useFavoritos';
 import { useIndicadores } from '@/hooks/useIndicadores';
 import { formatFecha } from '@/lib/format';
-import { INDICADOR_CODIGOS } from '@/types/indicador';
+import { INDICADOR_CODIGOS, type IndicadorCodigo } from '@/types/indicador';
 
 export function DashboardHome() {
   const { data, isLoading, error } = useIndicadores();
   const { favoritos } = useFavoritos();
+  const [indicadorSeleccionado, setIndicadorSeleccionado] = useState<IndicadorCodigo>('dolar');
+  const [mostrarConversor, setMostrarConversor] = useState(false);
 
   const codigosOrdenados = useMemo(() => {
     const favSet = new Set(favoritos);
@@ -37,12 +41,36 @@ export function DashboardHome() {
             <Button variant="secondary" className="flex-1 sm:flex-none">
               Favoritos
             </Button>
-            <Button variant="secondary" className="flex-1 sm:flex-none">
+            <Button
+              variant="secondary"
+              className="flex-1 sm:flex-none"
+              aria-pressed={mostrarConversor}
+              onClick={() => setMostrarConversor((prev) => !prev)}
+            >
               Conversor
             </Button>
           </div>
         </div>
       </header>
+
+      <section className="mb-8">
+        <div className="mb-4">
+          <h2 className="text-base font-semibold text-foreground">Indicador destacado</h2>
+          <p className="text-xs text-foreground-muted">
+            Selecciona un indicador de la grilla para ver su evolucion
+          </p>
+        </div>
+        <HistoryChart codigo={indicadorSeleccionado} />
+      </section>
+
+      {mostrarConversor && (
+        <section className="mb-8">
+          <div className="mb-4">
+            <h2 className="text-base font-semibold text-foreground">Conversor</h2>
+          </div>
+          <Converter />
+        </section>
+      )}
 
       <section>
         <div className="mb-4">
@@ -68,6 +96,8 @@ export function DashboardHome() {
                   codigo={codigo}
                   indicador={data?.[codigo]}
                   error={!data?.[codigo]}
+                  seleccionado={codigo === indicadorSeleccionado}
+                  onSelect={() => setIndicadorSeleccionado(codigo)}
                 />
               ),
             )}
