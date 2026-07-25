@@ -15,6 +15,7 @@ export function DashboardHome() {
   const { favoritos } = useFavoritos();
   const [indicadorSeleccionado, setIndicadorSeleccionado] = useState<IndicadorCodigo>('dolar');
   const [mostrarConversor, setMostrarConversor] = useState(false);
+  const [soloFavoritos, setSoloFavoritos] = useState(false);
 
   const codigosOrdenados = useMemo(() => {
     const favSet = new Set(favoritos);
@@ -22,6 +23,10 @@ export function DashboardHome() {
     const resto = INDICADOR_CODIGOS.filter((codigo) => !favSet.has(codigo));
     return [...favs, ...resto];
   }, [favoritos]);
+
+  const codigosVisibles = soloFavoritos
+    ? codigosOrdenados.filter((codigo) => favoritos.includes(codigo))
+    : codigosOrdenados;
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
@@ -37,7 +42,12 @@ export function DashboardHome() {
             Actualizado: {data ? formatFecha(data.fecha) : '—'}
           </span>
           <div className="flex gap-2">
-            <Button variant="secondary" className="flex-1 sm:flex-none">
+            <Button
+              variant="secondary"
+              className="flex-1 sm:flex-none"
+              aria-pressed={soloFavoritos}
+              onClick={() => setSoloFavoritos((prev) => !prev)}
+            >
               Favoritos
             </Button>
             <Button
@@ -73,9 +83,11 @@ export function DashboardHome() {
 
       <section>
         <div className="mb-4">
-          <h2 className="text-base font-semibold text-foreground">Todos los indicadores</h2>
+          <h2 className="text-base font-semibold text-foreground">
+            {soloFavoritos ? 'Favoritos' : 'Todos los indicadores'}
+          </h2>
           <p className="text-xs text-foreground-secondary">
-            {INDICADOR_CODIGOS.length} indicadores
+            {soloFavoritos ? codigosVisibles.length : INDICADOR_CODIGOS.length} indicadores
           </p>
         </div>
 
@@ -83,9 +95,14 @@ export function DashboardHome() {
           <p className="rounded border border-border bg-surface p-4 text-sm text-foreground-secondary">
             No se pudieron cargar los indicadores. Intenta recargar la pagina en unos momentos.
           </p>
+        ) : soloFavoritos && codigosVisibles.length === 0 ? (
+          <p className="rounded border border-border bg-surface p-4 text-sm text-foreground-secondary">
+            Aun no marcaste ningun indicador como favorito. Usa la estrella de una tarjeta para
+            agregarla aqui.
+          </p>
         ) : (
           <div className="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
-            {codigosOrdenados.map((codigo) => (
+            {codigosVisibles.map((codigo) => (
               <IndicatorCard
                 key={codigo}
                 codigo={codigo}
