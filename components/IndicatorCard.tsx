@@ -1,0 +1,52 @@
+'use client';
+
+import { formatCLP, formatPorcentaje } from '@/lib/format';
+import { VariationBadge } from '@/components/VariationBadge';
+import type { Indicador, IndicadorCodigo } from '@/types/indicador';
+
+interface IndicatorCardProps {
+  codigo: IndicadorCodigo;
+  indicador?: Indicador;
+  variacion?: number;
+  error?: boolean;
+}
+
+function formatValor(indicador: Indicador): string {
+  // Solo existen formatCLP/formatPorcentaje (MDI-010): los indicadores con
+  // unidad "Dolar" (bitcoin, libra_cobre) se muestran con formatCLP por ahora.
+  if (indicador.unidad_medida === 'Porcentaje') {
+    return formatPorcentaje(indicador.valor);
+  }
+  return formatCLP(indicador.valor);
+}
+
+export function IndicatorCard({ codigo, indicador, variacion, error }: IndicatorCardProps) {
+  const noDisponible = error || !indicador;
+
+  return (
+    <div className="rounded border border-border bg-surface p-4">
+      <div className="mono flex items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
+        <span>{codigo}</span>
+        {codigo === 'dolar_intercambio' && (
+          <span className="text-accent" title="Historico, sin actualizacion desde 2014">
+            †
+          </span>
+        )}
+      </div>
+
+      {noDisponible ? (
+        <p className="mt-3 text-sm text-foreground-muted">Dato no disponible</p>
+      ) : (
+        <>
+          <p className="mt-1 truncate text-sm text-foreground">{indicador.nombre}</p>
+          <div className="mt-2 flex items-baseline justify-between gap-2">
+            <span className="mono text-lg font-semibold text-foreground">
+              {formatValor(indicador)}
+            </span>
+            <VariationBadge value={variacion ?? 0} />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
