@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button';
+import { Converter } from '@/components/Converter';
 import { HistoryChart } from '@/components/HistoryChart';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { Skeleton } from '@/components/Skeleton';
@@ -94,6 +95,15 @@ export default function UiShowcasePage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <HistoryChart codigo="dolar" />
           <HistoryChart codigo="bitcoin" />
+        </div>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="mb-4 text-sm font-semibold tracking-wide text-foreground-secondary uppercase">
+          Converter
+        </h2>
+        <div className="max-w-lg">
+          <Converter />
         </div>
       </section>
     </div>
