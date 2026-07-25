@@ -11,6 +11,8 @@ interface IndicatorCardProps {
   indicador?: Indicador;
   variacion?: number;
   error?: boolean;
+  seleccionado?: boolean;
+  onSelect?: () => void;
 }
 
 function formatValor(indicador: Indicador): string {
@@ -22,12 +24,36 @@ function formatValor(indicador: Indicador): string {
   return formatCLP(indicador.valor);
 }
 
-export function IndicatorCard({ codigo, indicador, variacion, error }: IndicatorCardProps) {
+export function IndicatorCard({
+  codigo,
+  indicador,
+  variacion,
+  error,
+  seleccionado,
+  onSelect,
+}: IndicatorCardProps) {
   const noDisponible = error || !indicador;
   const { esFavorito, toggleFavorito } = useFavoritos();
 
   return (
-    <div className="rounded border border-border bg-surface p-4">
+    <div
+      role={onSelect ? 'button' : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onClick={onSelect}
+      onKeyDown={
+        onSelect
+          ? (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onSelect();
+              }
+            }
+          : undefined
+      }
+      className={`rounded border bg-surface p-4 transition-colors ${
+        seleccionado ? 'border-accent' : 'border-border'
+      } ${onSelect ? 'cursor-pointer' : ''}`}
+    >
       <div className="flex items-center justify-between gap-1">
         <div className="mono flex min-w-0 items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
           <span className="truncate">{codigo}</span>

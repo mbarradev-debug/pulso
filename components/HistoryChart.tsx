@@ -82,6 +82,10 @@ export function HistoryChart({ codigo }: HistoryChartProps) {
           <div className="flex h-full items-center justify-center text-sm text-foreground-muted">
             Cargando historico...
           </div>
+        ) : serieVisible.length === 0 ? (
+          <div className="flex h-full items-center justify-center text-sm text-foreground-muted">
+            Sin datos historicos disponibles para este indicador.
+          </div>
         ) : (
           <Line
             data={{

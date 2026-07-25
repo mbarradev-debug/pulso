@@ -10,7 +10,10 @@ export function FavoritesToggle({ activo, onToggle, className = '' }: FavoritesT
   return (
     <button
       type="button"
-      onClick={onToggle}
+      onClick={(event) => {
+        event.stopPropagation();
+        onToggle();
+      }}
       aria-pressed={activo}
       aria-label={activo ? 'Quitar de favoritos' : 'Marcar como favorito'}
       title={activo ? 'Quitar de favoritos' : 'Marcar como favorito'}
