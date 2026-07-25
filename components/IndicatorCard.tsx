@@ -2,6 +2,7 @@
 
 import { formatCLP, formatPorcentaje } from '@/lib/format';
 import { FavoritesToggle } from '@/components/FavoritesToggle';
+import { Skeleton } from '@/components/Skeleton';
 import { VariationBadge } from '@/components/VariationBadge';
 import { useFavoritos } from '@/hooks/useFavoritos';
 import type { Indicador, IndicadorCodigo } from '@/types/indicador';
@@ -11,6 +12,7 @@ interface IndicatorCardProps {
   indicador?: Indicador;
   variacion?: number;
   error?: boolean;
+  isLoading?: boolean;
   seleccionado?: boolean;
   onSelect?: () => void;
 }
@@ -29,10 +31,11 @@ export function IndicatorCard({
   indicador,
   variacion,
   error,
+  isLoading,
   seleccionado,
   onSelect,
 }: IndicatorCardProps) {
-  const noDisponible = error || !indicador;
+  const noDisponible = !isLoading && (error || !indicador);
   const { esFavorito, toggleFavorito } = useFavoritos();
 
   return (
@@ -56,11 +59,20 @@ export function IndicatorCard({
     >
       <div className="flex items-center justify-between gap-1">
         <div className="mono flex min-w-0 items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
-          <span className="truncate">{codigo}</span>
-          {codigo === 'dolar_intercambio' && (
-            <span className="flex-none text-accent" title="Historico, sin actualizacion desde 2014">
-              †
-            </span>
+          {isLoading ? (
+            <Skeleton className="h-3 w-14" />
+          ) : (
+            <>
+              <span className="truncate">{codigo}</span>
+              {codigo === 'dolar_intercambio' && (
+                <span
+                  className="flex-none text-accent"
+                  title="Historico, sin actualizacion desde 2014"
+                >
+                  †
+                </span>
+              )}
+            </>
           )}
         </div>
         <FavoritesToggle
@@ -70,18 +82,26 @@ export function IndicatorCard({
         />
       </div>
 
-      {noDisponible ? (
-        <p className="mt-3 text-sm text-foreground-muted">Dato no disponible</p>
+      {isLoading ? (
+        <div className="mt-3">
+          <Skeleton className="mb-2 h-4 w-24" />
+          <div className="mt-2 flex items-baseline justify-between gap-2">
+            <Skeleton className="h-6 w-16" />
+            <Skeleton className="h-5 w-14 rounded-pill" />
+          </div>
+        </div>
+      ) : noDisponible ? (
+        <p className="mt-3 text-sm text-foreground-secondary">Dato no disponible</p>
       ) : (
-        <>
-          <p className="mt-1 truncate text-sm text-foreground">{indicador.nombre}</p>
+        <div className="animate-fade-in">
+          <p className="mt-1 truncate text-sm text-foreground">{indicador!.nombre}</p>
           <div className="mt-2 flex items-baseline justify-between gap-2">
             <span className="mono text-lg font-semibold text-foreground">
-              {formatValor(indicador)}
+              {formatValor(indicador!)}
             </span>
             <VariationBadge value={variacion ?? 0} />
           </div>
-        </>
+        </div>
       )}
     </div>
   );

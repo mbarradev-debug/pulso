@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { Skeleton } from '@/components/Skeleton';
 import { useIndicadorHistory } from '@/hooks/useIndicadorHistory';
 import type { IndicadorCodigo } from '@/types/indicador';
 
@@ -79,15 +80,17 @@ export function HistoryChart({ codigo }: HistoryChartProps) {
             No se pudo cargar el historico de {codigo}.
           </div>
         ) : isLoading && !data ? (
-          <div className="flex h-full items-center justify-center text-sm text-foreground-muted">
-            Cargando historico...
+          <div className="flex h-full flex-col gap-3">
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className="flex-1" />
           </div>
         ) : serieVisible.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-sm text-foreground-muted">
+          <div className="flex h-full items-center justify-center text-sm text-foreground-secondary">
             Sin datos historicos disponibles para este indicador.
           </div>
         ) : (
           <Line
+            className="animate-fade-in"
             data={{
               labels: serieVisible.map((punto) => labelFormatter.format(new Date(punto.fecha))),
               datasets: [

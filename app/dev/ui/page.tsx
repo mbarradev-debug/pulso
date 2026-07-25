@@ -85,6 +85,7 @@ export default function UiShowcasePage() {
           <IndicatorCard codigo="ipc" indicador={ipcEjemplo} variacion={0.1} />
           <IndicatorCard codigo="dolar_intercambio" indicador={dolarIntercambioEjemplo} />
           <IndicatorCard codigo="utm" error />
+          <IndicatorCard codigo="euro" isLoading />
         </div>
       </section>
 

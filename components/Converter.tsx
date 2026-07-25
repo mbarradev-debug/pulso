@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { Skeleton } from '@/components/Skeleton';
 import { useIndicadores } from '@/hooks/useIndicadores';
 import { formatCLP, formatPorcentaje } from '@/lib/format';
 import { INDICADOR_CODIGOS, type IndicadorCodigo } from '@/types/indicador';
@@ -92,20 +93,23 @@ export function Converter() {
 
       <div className="rounded border-l-2 border-accent bg-surface-2 p-4">
         {isLoading && !data ? (
-          <p className="text-sm text-foreground-muted">Cargando valor del dia...</p>
+          <div>
+            <Skeleton className="mb-2 h-3 w-32" />
+            <Skeleton className="h-6 w-40" />
+          </div>
         ) : !indicador ? (
-          <p className="text-sm text-foreground-muted">Dato no disponible para {codigo}.</p>
+          <p className="text-sm text-foreground-secondary">Dato no disponible para {codigo}.</p>
         ) : esPorcentaje ? (
-          <>
+          <div className="animate-fade-in">
             <p className="mb-1 text-xs text-foreground-muted">
               {codigo.toUpperCase()} es un indicador porcentual, no convertible. Valor actual:
             </p>
             <p className="mono text-lg font-semibold text-foreground">
               {formatPorcentaje(indicador.valor)}
             </p>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="animate-fade-in">
             <p className="mb-1 text-xs text-foreground-muted">
               Equivalente en {direccion === 'clpAIndicador' ? codigo.toUpperCase() : 'CLP'}
             </p>
@@ -114,7 +118,7 @@ export function Converter() {
                 ? (resultado ?? 0).toLocaleString('es-CL', { maximumFractionDigits: 4 })
                 : formatCLP(resultado ?? 0)}
             </p>
-          </>
+          </div>
         )}
       </div>
     </div>
