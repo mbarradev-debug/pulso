@@ -81,8 +81,8 @@ export default function UiShowcasePage() {
           IndicatorCard (grilla igual a page.tsx)
         </h2>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4">
-          <IndicatorCard codigo="dolar" indicador={dolarEjemplo} variacion={-0.35} />
-          <IndicatorCard codigo="ipc" indicador={ipcEjemplo} variacion={0.1} />
+          <IndicatorCard codigo="dolar" indicador={dolarEjemplo} />
+          <IndicatorCard codigo="ipc" indicador={ipcEjemplo} />
           <IndicatorCard codigo="dolar_intercambio" indicador={dolarIntercambioEjemplo} />
           <IndicatorCard codigo="utm" error />
           <IndicatorCard codigo="euro" isLoading />
