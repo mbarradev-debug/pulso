@@ -1,16 +1,19 @@
-export type IndicadorCodigo =
-  | 'uf'
-  | 'ivp'
-  | 'dolar'
-  | 'dolar_intercambio'
-  | 'euro'
-  | 'ipc'
-  | 'utm'
-  | 'imacec'
-  | 'tpm'
-  | 'libra_cobre'
-  | 'tasa_desempleo'
-  | 'bitcoin';
+export const INDICADOR_CODIGOS = [
+  'uf',
+  'ivp',
+  'dolar',
+  'dolar_intercambio',
+  'euro',
+  'ipc',
+  'utm',
+  'imacec',
+  'tpm',
+  'libra_cobre',
+  'tasa_desempleo',
+  'bitcoin',
+] as const;
+
+export type IndicadorCodigo = (typeof INDICADOR_CODIGOS)[number];
 
 export interface Indicador {
   codigo: IndicadorCodigo;
