@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button';
+import { HistoryChart } from '@/components/HistoryChart';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { Skeleton } from '@/components/Skeleton';
 import { VariationBadge } from '@/components/VariationBadge';
@@ -83,6 +84,16 @@ export default function UiShowcasePage() {
           <IndicatorCard codigo="ipc" indicador={ipcEjemplo} variacion={0.1} />
           <IndicatorCard codigo="dolar_intercambio" indicador={dolarIntercambioEjemplo} />
           <IndicatorCard codigo="utm" error />
+        </div>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="mb-4 text-sm font-semibold tracking-wide text-foreground-secondary uppercase">
+          HistoryChart
+        </h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <HistoryChart codigo="dolar" />
+          <HistoryChart codigo="bitcoin" />
         </div>
       </section>
     </div>
