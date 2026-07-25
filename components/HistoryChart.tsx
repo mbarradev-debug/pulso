@@ -62,7 +62,7 @@ export function HistoryChart({ codigo }: HistoryChartProps) {
             key={r}
             type="button"
             onClick={() => setRango(r)}
-            className={`rounded-pill px-3 py-1 text-xs font-semibold transition-colors ${
+            className={`min-h-11 min-w-11 rounded-pill px-3 py-1 text-xs font-semibold transition-colors ${
               rango === r
                 ? 'bg-accent text-on-accent'
                 : 'text-foreground-secondary hover:text-foreground'
@@ -73,7 +73,7 @@ export function HistoryChart({ codigo }: HistoryChartProps) {
         ))}
       </div>
 
-      <div className="relative h-64">
+      <div className="relative h-56 sm:h-64">
         {error ? (
           <div className="flex h-full items-center justify-center text-sm text-foreground-secondary">
             No se pudo cargar el historico de {codigo}.
