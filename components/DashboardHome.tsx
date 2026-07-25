@@ -5,7 +5,6 @@ import { Button } from '@/components/Button';
 import { Converter } from '@/components/Converter';
 import { HistoryChart } from '@/components/HistoryChart';
 import { IndicatorCard } from '@/components/IndicatorCard';
-import { Skeleton } from '@/components/Skeleton';
 import { useFavoritos } from '@/hooks/useFavoritos';
 import { useIndicadores } from '@/hooks/useIndicadores';
 import { formatFecha } from '@/lib/format';
@@ -84,23 +83,17 @@ export function DashboardHome() {
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
-            {codigosOrdenados.map((codigo) =>
-              isLoading && !data ? (
-                <div key={codigo} className="rounded border border-border bg-surface p-4">
-                  <Skeleton className="mb-3 h-3 w-16" />
-                  <Skeleton className="h-7 w-24" />
-                </div>
-              ) : (
-                <IndicatorCard
-                  key={codigo}
-                  codigo={codigo}
-                  indicador={data?.[codigo]}
-                  error={!data?.[codigo]}
-                  seleccionado={codigo === indicadorSeleccionado}
-                  onSelect={() => setIndicadorSeleccionado(codigo)}
-                />
-              ),
-            )}
+            {codigosOrdenados.map((codigo) => (
+              <IndicatorCard
+                key={codigo}
+                codigo={codigo}
+                indicador={data?.[codigo]}
+                error={!!data && !data[codigo]}
+                isLoading={isLoading && !data}
+                seleccionado={codigo === indicadorSeleccionado}
+                onSelect={() => setIndicadorSeleccionado(codigo)}
+              />
+            ))}
           </div>
         )}
       </section>
