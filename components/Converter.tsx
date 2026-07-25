@@ -60,7 +60,7 @@ export function Converter() {
             step="any"
             value={montoTexto}
             onChange={(e) => setMontoTexto(e.target.value)}
-            className="min-h-11 w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground"
+            className="min-h-11 w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none"
           />
         </div>
         <button
@@ -68,7 +68,7 @@ export function Converter() {
           onClick={handleSwap}
           title="Invertir conversion"
           aria-label="Invertir conversion"
-          className="min-h-11 min-w-11 self-center rounded border border-border bg-surface-2 p-2 text-foreground-secondary transition-colors hover:border-border-strong hover:text-accent sm:self-auto"
+          className="min-h-11 min-w-11 self-center rounded border border-border bg-surface-2 p-2 text-foreground-secondary transition-colors hover:border-border-strong hover:text-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none sm:self-auto"
         >
           ⇄
         </button>
@@ -80,7 +80,7 @@ export function Converter() {
             id="conv-indicador"
             value={codigo}
             onChange={(e) => setCodigo(e.target.value as IndicadorCodigo)}
-            className="min-h-11 w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground"
+            className="min-h-11 w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none"
           >
             {INDICADOR_CODIGOS.map((c) => (
               <option key={c} value={c}>
@@ -101,7 +101,7 @@ export function Converter() {
           <p className="text-sm text-foreground-secondary">Dato no disponible para {codigo}.</p>
         ) : esPorcentaje ? (
           <div className="animate-fade-in">
-            <p className="mb-1 text-xs text-foreground-muted">
+            <p className="mb-1 text-xs text-foreground-secondary">
               {codigo.toUpperCase()} es un indicador porcentual, no convertible. Valor actual:
             </p>
             <p className="mono text-lg font-semibold text-foreground">
@@ -110,7 +110,7 @@ export function Converter() {
           </div>
         ) : (
           <div className="animate-fade-in">
-            <p className="mb-1 text-xs text-foreground-muted">
+            <p className="mb-1 text-xs text-foreground-secondary">
               Equivalente en {direccion === 'clpAIndicador' ? codigo.toUpperCase() : 'CLP'}
             </p>
             <p className="mono text-lg font-semibold text-foreground">

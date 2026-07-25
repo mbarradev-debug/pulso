@@ -30,10 +30,10 @@ export function DashboardHome() {
           <h1 className="text-lg font-semibold tracking-tight text-foreground">
             Indicadores Chile
           </h1>
-          <p className="mono text-xs text-foreground-muted">mindicador.cl</p>
+          <p className="mono text-xs text-foreground-secondary">mindicador.cl</p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-          <span className="mono text-2xs text-foreground-muted">
+          <span className="mono text-2xs text-foreground-secondary">
             Actualizado: {data ? formatFecha(data.fecha) : '—'}
           </span>
           <div className="flex gap-2">
@@ -55,7 +55,7 @@ export function DashboardHome() {
       <section className="mb-8">
         <div className="mb-4">
           <h2 className="text-base font-semibold text-foreground">Indicador destacado</h2>
-          <p className="text-xs text-foreground-muted">
+          <p className="text-xs text-foreground-secondary">
             Selecciona un indicador de la grilla para ver su evolucion
           </p>
         </div>
@@ -74,7 +74,9 @@ export function DashboardHome() {
       <section>
         <div className="mb-4">
           <h2 className="text-base font-semibold text-foreground">Todos los indicadores</h2>
-          <p className="text-xs text-foreground-muted">{INDICADOR_CODIGOS.length} indicadores</p>
+          <p className="text-xs text-foreground-secondary">
+            {INDICADOR_CODIGOS.length} indicadores
+          </p>
         </div>
 
         {error && !data ? (
