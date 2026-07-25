@@ -1,26 +1,72 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0b;
+  --surface: #141416;
+  --surface-2: #1c1c1f;
+  --border: #26262a;
+  --border-strong: #38383e;
+
+  --foreground: #f5f5f4;
+  --foreground-secondary: #a8a29e;
+  --foreground-muted: #6b6862;
+
+  --accent: #e9b949;
+  --accent-strong: #f2c766;
+  --accent-soft: rgba(233, 185, 73, 0.12);
+  --on-accent: #171208;
+
+  --up: #34d399;
+  --up-bg: rgba(52, 211, 153, 0.12);
+  --down: #f87171;
+  --down-bg: rgba(248, 113, 113, 0.12);
+  --flat: #a8a29e;
+  --flat-bg: rgba(168, 162, 158, 0.12);
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+
+  --color-up: var(--up);
+  --color-up-bg: var(--up-bg);
+  --color-down: var(--down);
+  --color-down-bg: var(--down-bg);
+  --color-flat: var(--flat);
+  --color-flat-bg: var(--flat-bg);
+
+  --radius: 10px;
+  --radius-pill: 999px;
+
+  --font-sans:
+    var(--font-geist-sans), 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono), 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1.4;
+  --text-display: 2.75rem;
+  --text-display--line-height: 1;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
