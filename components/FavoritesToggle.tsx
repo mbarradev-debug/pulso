@@ -14,7 +14,7 @@ export function FavoritesToggle({ activo, onToggle, className = '' }: FavoritesT
       aria-pressed={activo}
       aria-label={activo ? 'Quitar de favoritos' : 'Marcar como favorito'}
       title={activo ? 'Quitar de favoritos' : 'Marcar como favorito'}
-      className={`rounded-pill p-1 transition-colors ${
+      className={`flex min-h-11 min-w-11 items-center justify-center rounded-pill transition-colors ${
         activo ? 'text-accent' : 'text-foreground-muted hover:text-foreground-secondary'
       } ${className}`}
     >

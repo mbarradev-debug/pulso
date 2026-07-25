@@ -28,16 +28,20 @@ export function IndicatorCard({ codigo, indicador, variacion, error }: Indicator
 
   return (
     <div className="rounded border border-border bg-surface p-4">
-      <div className="flex items-center justify-between">
-        <div className="mono flex items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
-          <span>{codigo}</span>
+      <div className="flex items-center justify-between gap-1">
+        <div className="mono flex min-w-0 items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
+          <span className="truncate">{codigo}</span>
           {codigo === 'dolar_intercambio' && (
-            <span className="text-accent" title="Historico, sin actualizacion desde 2014">
+            <span className="flex-none text-accent" title="Historico, sin actualizacion desde 2014">
               †
             </span>
           )}
         </div>
-        <FavoritesToggle activo={esFavorito(codigo)} onToggle={() => toggleFavorito(codigo)} />
+        <FavoritesToggle
+          activo={esFavorito(codigo)}
+          onToggle={() => toggleFavorito(codigo)}
+          className="flex-none"
+        />
       </div>
 
       {noDisponible ? (

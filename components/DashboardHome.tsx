@@ -21,20 +21,26 @@ export function DashboardHome() {
   }, [favoritos]);
 
   return (
-    <div className="container mx-auto max-w-6xl px-6 py-8">
-      <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
+    <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+      <header className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
         <div>
           <h1 className="text-lg font-semibold tracking-tight text-foreground">
             Indicadores Chile
           </h1>
           <p className="mono text-xs text-foreground-muted">mindicador.cl</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <span className="mono text-2xs text-foreground-muted">
             Actualizado: {data ? formatFecha(data.fecha) : '—'}
           </span>
-          <Button variant="secondary">Favoritos</Button>
-          <Button variant="secondary">Conversor</Button>
+          <div className="flex gap-2">
+            <Button variant="secondary" className="flex-1 sm:flex-none">
+              Favoritos
+            </Button>
+            <Button variant="secondary" className="flex-1 sm:flex-none">
+              Conversor
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -49,7 +55,7 @@ export function DashboardHome() {
             No se pudieron cargar los indicadores. Intenta recargar la pagina en unos momentos.
           </p>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4">
+          <div className="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
             {codigosOrdenados.map((codigo) =>
               isLoading && !data ? (
                 <div key={codigo} className="rounded border border-border bg-surface p-4">

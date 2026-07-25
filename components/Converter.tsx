@@ -46,19 +46,20 @@ export function Converter() {
 
   return (
     <div className="rounded border border-border bg-surface p-6">
-      <div className="mb-4 flex flex-wrap items-end gap-3">
-        <div className="min-w-[140px] flex-1">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        <div className="w-full sm:min-w-[140px] sm:flex-1">
           <label className="mb-1 block text-xs text-foreground-secondary" htmlFor="conv-amount">
             {direccion === 'clpAIndicador' ? 'Monto en CLP' : `Monto en ${codigo.toUpperCase()}`}
           </label>
           <input
             id="conv-amount"
             type="number"
+            inputMode="decimal"
             min={0}
             step="any"
             value={montoTexto}
             onChange={(e) => setMontoTexto(e.target.value)}
-            className="w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground"
+            className="min-h-11 w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground"
           />
         </div>
         <button
@@ -66,11 +67,11 @@ export function Converter() {
           onClick={handleSwap}
           title="Invertir conversion"
           aria-label="Invertir conversion"
-          className="rounded border border-border bg-surface-2 p-2 text-foreground-secondary transition-colors hover:border-border-strong hover:text-accent"
+          className="min-h-11 min-w-11 self-center rounded border border-border bg-surface-2 p-2 text-foreground-secondary transition-colors hover:border-border-strong hover:text-accent sm:self-auto"
         >
           ⇄
         </button>
-        <div className="min-w-[140px] flex-1">
+        <div className="w-full sm:min-w-[140px] sm:flex-1">
           <label className="mb-1 block text-xs text-foreground-secondary" htmlFor="conv-indicador">
             Indicador
           </label>
@@ -78,7 +79,7 @@ export function Converter() {
             id="conv-indicador"
             value={codigo}
             onChange={(e) => setCodigo(e.target.value as IndicadorCodigo)}
-            className="w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground"
+            className="min-h-11 w-full rounded border border-border bg-surface-2 px-3 py-2 text-sm text-foreground"
           >
             {INDICADOR_CODIGOS.map((c) => (
               <option key={c} value={c}>
