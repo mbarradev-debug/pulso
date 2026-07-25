@@ -17,8 +17,8 @@ export function FavoritesToggle({ activo, onToggle, className = '' }: FavoritesT
       aria-pressed={activo}
       aria-label={activo ? 'Quitar de favoritos' : 'Marcar como favorito'}
       title={activo ? 'Quitar de favoritos' : 'Marcar como favorito'}
-      className={`flex min-h-11 min-w-11 items-center justify-center rounded-pill transition-colors ${
-        activo ? 'text-accent' : 'text-foreground-muted hover:text-foreground-secondary'
+      className={`flex min-h-11 min-w-11 items-center justify-center rounded-pill transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface focus-visible:outline-none ${
+        activo ? 'text-accent' : 'text-foreground-secondary hover:text-foreground'
       } ${className}`}
     >
       <svg

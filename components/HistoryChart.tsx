@@ -63,7 +63,9 @@ export function HistoryChart({ codigo }: HistoryChartProps) {
             key={r}
             type="button"
             onClick={() => setRango(r)}
-            className={`min-h-11 min-w-11 rounded-pill px-3 py-1 text-xs font-semibold transition-colors ${
+            aria-pressed={rango === r}
+            aria-label={`Ver rango ${r}`}
+            className={`min-h-11 min-w-11 rounded-pill px-3 py-1 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-2 focus-visible:outline-none ${
               rango === r
                 ? 'bg-accent text-on-accent'
                 : 'text-foreground-secondary hover:text-foreground'
@@ -126,11 +128,14 @@ export function HistoryChart({ codigo }: HistoryChartProps) {
               scales: {
                 x: {
                   grid: { color: getCssVar('--surface-2', '#1C1C1F') },
-                  ticks: { color: getCssVar('--foreground-muted', '#6B6862'), maxTicksLimit: 8 },
+                  ticks: {
+                    color: getCssVar('--foreground-secondary', '#A8A29E'),
+                    maxTicksLimit: 8,
+                  },
                 },
                 y: {
                   grid: { color: getCssVar('--surface-2', '#1C1C1F') },
-                  ticks: { color: getCssVar('--foreground-muted', '#6B6862') },
+                  ticks: { color: getCssVar('--foreground-secondary', '#A8A29E') },
                 },
               },
             }}

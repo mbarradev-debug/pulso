@@ -42,6 +42,8 @@ export function IndicatorCard({
     <div
       role={onSelect ? 'button' : undefined}
       tabIndex={onSelect ? 0 : undefined}
+      aria-label={onSelect ? `Ver historico de ${codigo}` : undefined}
+      aria-pressed={onSelect ? seleccionado : undefined}
       onClick={onSelect}
       onKeyDown={
         onSelect
@@ -53,12 +55,12 @@ export function IndicatorCard({
             }
           : undefined
       }
-      className={`rounded border bg-surface p-4 transition-colors ${
+      className={`rounded border bg-surface p-4 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${
         seleccionado ? 'border-accent' : 'border-border'
       } ${onSelect ? 'cursor-pointer' : ''}`}
     >
       <div className="flex items-center justify-between gap-1">
-        <div className="mono flex min-w-0 items-center gap-1 text-2xs tracking-wide text-foreground-muted uppercase">
+        <div className="mono flex min-w-0 items-center gap-1 text-2xs tracking-wide text-foreground-secondary uppercase">
           {isLoading ? (
             <Skeleton className="h-3 w-14" />
           ) : (
