@@ -32,3 +32,12 @@ export function formatFecha(fecha: string | Date): string {
   const date = typeof fecha === 'string' ? new Date(fecha) : fecha;
   return fechaFormatter.format(date);
 }
+
+export function formatValorPorUnidad(valor: number, unidadMedida?: string): string {
+  // Solo existen formatCLP/formatPorcentaje (MDI-010): los indicadores con
+  // unidad "Dolar" (bitcoin, libra_cobre) se muestran con formatCLP por ahora.
+  if (unidadMedida === 'Porcentaje') {
+    return formatPorcentaje(valor);
+  }
+  return formatCLP(valor);
+}

@@ -93,6 +93,7 @@ export function DashboardHome() {
           <HistoryChart
             codigo={indicadorSeleccionado}
             fechaReferencia={data?.[indicadorSeleccionado]?.fecha}
+            unidadMedida={data?.[indicadorSeleccionado]?.unidad_medida}
           />
         )}
       </section>

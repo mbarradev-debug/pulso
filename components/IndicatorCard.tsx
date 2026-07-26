@@ -1,6 +1,6 @@
 'use client';
 
-import { formatCLP, formatPorcentaje } from '@/lib/format';
+import { formatValorPorUnidad } from '@/lib/format';
 import { FavoritesToggle } from '@/components/FavoritesToggle';
 import { Skeleton } from '@/components/Skeleton';
 import { useFavoritos } from '@/hooks/useFavoritos';
@@ -16,12 +16,7 @@ interface IndicatorCardProps {
 }
 
 function formatValor(indicador: Indicador): string {
-  // Solo existen formatCLP/formatPorcentaje (MDI-010): los indicadores con
-  // unidad "Dolar" (bitcoin, libra_cobre) se muestran con formatCLP por ahora.
-  if (indicador.unidad_medida === 'Porcentaje') {
-    return formatPorcentaje(indicador.valor);
-  }
-  return formatCLP(indicador.valor);
+  return formatValorPorUnidad(indicador.valor, indicador.unidad_medida);
 }
 
 export function IndicatorCard({
