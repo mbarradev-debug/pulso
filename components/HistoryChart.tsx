@@ -13,6 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { Skeleton } from '@/components/Skeleton';
 import { useIndicadorHistory } from '@/hooks/useIndicadorHistory';
+import { formatFecha, formatValorPorUnidad } from '@/lib/format';
 import type { IndicadorCodigo } from '@/types/indicador';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
@@ -50,9 +51,12 @@ interface HistoryChartProps {
   // de publicacion, el ancla puede quedar muy atras en el tiempo. Si no se recibe,
   // se usa la fecha actual.
   fechaReferencia?: string | Date;
+  // Unidad de medida del indicador (ej. "Pesos", "Porcentaje"), para formatear el
+  // valor del tooltip igual que IndicatorCard. Si no se recibe, se asume moneda.
+  unidadMedida?: string;
 }
 
-export function HistoryChart({ codigo, fechaReferencia }: HistoryChartProps) {
+export function HistoryChart({ codigo, fechaReferencia, unidadMedida }: HistoryChartProps) {
   const [rango, setRango] = useState<Rango>('1M');
   const fechaAncla = useMemo(
     () => (fechaReferencia ? new Date(fechaReferencia) : new Date()),
@@ -161,6 +165,17 @@ export function HistoryChart({ codigo, fechaReferencia }: HistoryChartProps) {
                   bodyColor: getCssVar('--foreground-secondary', '#A8A29E'),
                   padding: 10,
                   cornerRadius: 8,
+                  displayColors: false,
+                  callbacks: {
+                    title: (items) => {
+                      const punto = serieVisible[items[0]?.dataIndex ?? -1];
+                      return punto ? formatFecha(punto.fecha) : '';
+                    },
+                    label: (item) =>
+                      typeof item.parsed.y === 'number'
+                        ? formatValorPorUnidad(item.parsed.y, unidadMedida)
+                        : '',
+                  },
                 },
               },
               scales: {
