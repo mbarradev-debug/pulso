@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import { Fira_Code, Fira_Sans } from 'next/font/google';
 import './globals.css';
 
@@ -31,7 +32,10 @@ export default function RootLayout({
       className={`dark ${firaSans.variable} ${firaCode.variable} h-full antialiased`}
       style={{ colorScheme: 'dark' }}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
