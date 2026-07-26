@@ -30,6 +30,8 @@ export function DashboardHome() {
     [soloFavoritos, codigosOrdenados, favoritos],
   );
 
+  const totalIndicadores = soloFavoritos ? codigosVisibles.length : INDICADOR_CODIGOS.length;
+
   const [soloFavoritosAnterior, setSoloFavoritosAnterior] = useState(soloFavoritos);
   if (soloFavoritos !== soloFavoritosAnterior) {
     setSoloFavoritosAnterior(soloFavoritos);
@@ -107,7 +109,7 @@ export function DashboardHome() {
             {soloFavoritos ? 'Favoritos' : 'Todos los indicadores'}
           </h2>
           <p className="text-xs text-foreground-secondary">
-            {soloFavoritos ? codigosVisibles.length : INDICADOR_CODIGOS.length} indicadores
+            {totalIndicadores} indicador{totalIndicadores === 1 ? '' : 'es'}
           </p>
         </div>
 
