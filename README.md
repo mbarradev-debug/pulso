@@ -1,48 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pulso — Dashboard de indicadores económicos de Chile
 
-## Getting Started
+![CI](https://github.com/mbarradev-debug/pulso/actions/workflows/ci.yml/badge.svg)
 
-First, run the development server:
+Dashboard que consume la API pública de [mindicador.cl](https://mindicador.cl) para mostrar en tiempo (casi) real los 12 indicadores económicos de Chile: UF, dólar, euro, IPC, UTM, IMACEC, TPM, libra de cobre, tasa de desempleo, bitcoin, IVP y dólar acuerdo. Incluye gráfico histórico por indicador, favoritos persistentes y un conversor de monto entre CLP y cualquier indicador.
+
+![Vista general del dashboard](docs/dashboard-screenshot.jpg)
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack) + React 19 + TypeScript
+- Tailwind CSS 4
+- [SWR](https://swr.vercel.app) para fetching y revalidación en el cliente
+- Chart.js / react-chartjs-2 para el histórico
+- Vitest + Testing Library (unitarios/componentes), Playwright (E2E)
+
+## Cómo correrlo localmente
+
+Requisitos: Node 26+, npm.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000). No se necesitan variables de entorno: la app consulta `https://mindicador.cl/api` directamente desde sus propios Route Handlers.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Otros scripts disponibles:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script                 | Qué hace                             |
+| ---------------------- | ------------------------------------ |
+| `npm run build`        | Build de producción                  |
+| `npm run start`        | Sirve el build de producción         |
+| `npm run lint`         | ESLint                               |
+| `npm run format`       | Formatea con Prettier                |
+| `npm run format:check` | Verifica formato sin escribir        |
+| `npm run test`         | Tests unitarios/componentes (Vitest) |
+| `npm run test:watch`   | Vitest en modo watch                 |
+| `npm run test:e2e`     | Tests E2E (Playwright)               |
+
+## Arquitectura
+
+```
+app/
+  page.tsx                              → home, renderiza DashboardHome
+  api/indicadores/route.ts              → GET snapshot de los 12 indicadores
+  api/indicadores/[codigo]/[anio]/      → GET histórico anual de un indicador
+  dev/ui/                                → catálogo interno de componentes (solo en dev, bloqueado en prod)
+components/                             → DashboardHome, IndicatorCard, HistoryChart, Converter, etc.
+hooks/                                  → useIndicadores, useIndicadorHistory, useFavoritos
+lib/mindicador-client.ts                → cliente HTTP hacia mindicador.cl (timeout, manejo de errores)
+types/indicador.ts                      → tipos y los 12 códigos de indicador soportados
+```
+
+La app nunca llama a `mindicador.cl` desde el navegador: los componentes cliente consumen `/api/indicadores*` vía SWR, y esos Route Handlers son los que hacen el `fetch` server-side hacia mindicador.cl (con cache/`revalidate` de Next.js y un fallback al último snapshot bueno si la API externa falla).
+
+`proxy.ts` bloquea `/dev/ui` en producción (devuelve 404), ya que es una ruta de desarrollo interna.
+
+### Particularidades de los datos de mindicador.cl
+
+No todos los indicadores se actualizan igual — esto afecta cómo se calculan rangos y variaciones en `HistoryChart`/`useIndicadorHistory`:
+
+- **Diarios**: `uf`, `ivp`
+- **Diarios hábiles** (solo días de mercado): `dolar`, `euro`, `libra_cobre`, `tpm`
+- **Semanal aprox.**: `bitcoin` (~52 puntos/año pese a ser un mercado 24/7)
+- **Mensuales**: `ipc`, `utm`, `imacec`, `tasa_desempleo`
+- **Descontinuado**: `dolar_intercambio` — sin datos reales desde 2014-11-13
+
+## Testing
+
+- **Unitarios/componentes** (`npm run test`): Vitest + Testing Library, cubren hooks, componentes de UI y los Route Handlers.
+- **E2E** (`npm run test:e2e`): Playwright contra el build de producción (`playwright.config.ts` levanta `next build && next start` automáticamente). Los mocks de red interceptan las rutas propias de la app (`/api/indicadores*`), no `mindicador.cl`, para que los tests no dependan de la API externa.
 
 ## Git hooks
 
-This repo uses [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint and Prettier on staged files before every commit. If the hook reports lint errors, fix them before committing — this is the expected path.
+Este repo usa [Husky](https://typicode.github.io/husky/) y [lint-staged](https://github.com/lint-staged/lint-staged) para correr ESLint y Prettier sobre los archivos staged antes de cada commit. Si el hook reporta errores, hay que corregirlos antes de commitear — ese es el camino esperado.
 
-In exceptional cases (e.g. a WIP commit on a local branch), you can skip the hook with:
+En casos excepcionales (ej. un commit WIP en una rama local) se puede saltar el hook con:
 
 ```bash
 git commit --no-verify
 ```
 
-Use this sparingly — code pushed without passing lint/format checks may fail CI or be flagged in review.
+Usar esto con moderación — código que se pushea sin pasar lint/format puede fallar en CI o ser marcado en la revisión.
 
-## Learn More
+## CI/CD
 
-To learn more about Next.js, take a look at the following resources:
+Cada Pull Request hacia `main` corre un workflow de GitHub Actions (`.github/workflows/ci.yml`) con jobs separados de **lint**, **type-check**, **tests unitarios**, **tests E2E** y **build**, con cache de dependencias npm. Cualquier fallo bloquea la PR.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+El deploy en [Vercel](https://vercel.com) (preview por PR y producción en `main`) está planificado como próximo paso del proyecto.
