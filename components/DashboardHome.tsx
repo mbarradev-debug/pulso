@@ -24,9 +24,23 @@ export function DashboardHome() {
     return [...favs, ...resto];
   }, [favoritos]);
 
-  const codigosVisibles = soloFavoritos
-    ? codigosOrdenados.filter((codigo) => favoritos.includes(codigo))
-    : codigosOrdenados;
+  const codigosVisibles = useMemo(
+    () =>
+      soloFavoritos ? codigosOrdenados.filter((codigo) => favoritos.includes(codigo)) : codigosOrdenados,
+    [soloFavoritos, codigosOrdenados, favoritos],
+  );
+
+  const [soloFavoritosAnterior, setSoloFavoritosAnterior] = useState(soloFavoritos);
+  if (soloFavoritos !== soloFavoritosAnterior) {
+    setSoloFavoritosAnterior(soloFavoritos);
+    if (
+      soloFavoritos &&
+      codigosVisibles.length > 0 &&
+      !codigosVisibles.includes(indicadorSeleccionado)
+    ) {
+      setIndicadorSeleccionado(codigosVisibles[0]);
+    }
+  }
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
@@ -69,7 +83,13 @@ export function DashboardHome() {
             Selecciona un indicador de la grilla para ver su evolucion
           </p>
         </div>
-        <HistoryChart codigo={indicadorSeleccionado} />
+        {soloFavoritos && codigosVisibles.length === 0 ? (
+          <div className="rounded border border-border bg-surface p-6 text-sm text-foreground-secondary">
+            Marca un indicador como favorito para ver su evolucion aqui.
+          </div>
+        ) : (
+          <HistoryChart codigo={indicadorSeleccionado} />
+        )}
       </section>
 
       {mostrarConversor && (
