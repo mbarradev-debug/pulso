@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { Button } from '@/components/Button';
 import { Converter } from '@/components/Converter';
 import { HistoryChart } from '@/components/HistoryChart';
@@ -5,6 +6,8 @@ import { IndicatorCard } from '@/components/IndicatorCard';
 import { Skeleton } from '@/components/Skeleton';
 import { VariationBadge } from '@/components/VariationBadge';
 import type { Indicador } from '@/types/indicador';
+
+export const dynamic = 'force-dynamic';
 
 const dolarEjemplo: Indicador = {
   codigo: 'dolar',
@@ -44,6 +47,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function UiShowcasePage() {
+  if (process.env.NODE_ENV === 'production') {
+    notFound();
+  }
+
   return (
     <div className="container mx-auto max-w-4xl px-6 py-10">
       <h1 className="mb-8 text-lg font-semibold text-foreground">
