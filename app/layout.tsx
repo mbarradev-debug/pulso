@@ -15,10 +15,30 @@ const firaCode = Fira_Code({
   weight: ['400', '500', '600'],
 });
 
+const SITE_URL = 'https://pulso-cyan-zeta.vercel.app';
+const TITLE = 'Dashboard mindicador.cl';
+const DESCRIPTION =
+  'Panel de indicadores económicos de Chile en tiempo real: UF, dólar, euro, IPC, TPM y más.';
+
 export const metadata: Metadata = {
-  title: 'Dashboard mindicador.cl',
-  description:
-    'Panel de indicadores económicos de Chile en tiempo real: UF, dólar, euro, IPC, TPM y más.',
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: SITE_URL,
+    siteName: 'Pulso',
+    images: ['/opengraph-image'],
+    locale: 'es_CL',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ['/opengraph-image'],
+  },
 };
 
 export default function RootLayout({
