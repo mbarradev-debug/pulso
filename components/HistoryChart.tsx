@@ -19,11 +19,20 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip,
 
 type Rango = '1M' | '6M' | '1A';
 
+const RANGOS: readonly Rango[] = ['1M', '6M', '1A'];
+
 const MESES_POR_RANGO: Record<Rango, number> = {
   '1M': 1,
   '6M': 6,
   '1A': 12,
 };
+
+// Indicadores con cadencia mensual o menor (ipc, utm, imacec, tasa_desempleo) pueden
+// tener 1-2 puntos en la ventana de 1M o 6M: no es un bug de datos, pero una pestana
+// con casi ningun punto se lee como un grafico roto. Se oculta dinamicamente segun
+// la cantidad real de puntos en cada rango, sin asumir de antemano que indicadores
+// son mensuales.
+const MIN_PUNTOS_RANGO = 3;
 
 const labelFormatter = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: '2-digit' });
 
@@ -51,6 +60,26 @@ export function HistoryChart({ codigo, fechaReferencia }: HistoryChartProps) {
   );
   const { data, isLoading, error } = useIndicadorHistory(codigo, fechaAncla);
 
+  const rangosVisibles = useMemo(() => {
+    if (!data) return RANGOS;
+    const contarEnRango = (meses: number) => {
+      const corte = new Date(fechaAncla);
+      corte.setMonth(corte.getMonth() - meses);
+      return data.filter((punto) => new Date(punto.fecha) >= corte).length;
+    };
+    // "1A" siempre queda visible como respaldo, aunque no alcance el minimo.
+    return RANGOS.filter((r) => r === '1A' || contarEnRango(MESES_POR_RANGO[r]) >= MIN_PUNTOS_RANGO);
+  }, [data, fechaAncla]);
+
+  const rangosVisiblesKey = rangosVisibles.join(',');
+  const [rangosVisiblesKeyAnterior, setRangosVisiblesKeyAnterior] = useState(rangosVisiblesKey);
+  if (rangosVisiblesKey !== rangosVisiblesKeyAnterior) {
+    setRangosVisiblesKeyAnterior(rangosVisiblesKey);
+    if (!rangosVisibles.includes(rango)) {
+      setRango(rangosVisibles[0]);
+    }
+  }
+
   const serieVisible = useMemo(() => {
     if (!data) return [];
     const corte = new Date(fechaAncla);
@@ -67,7 +96,7 @@ export function HistoryChart({ codigo, fechaReferencia }: HistoryChartProps) {
   return (
     <div className="rounded border border-border bg-surface p-6">
       <div className="mb-4 flex w-fit gap-1 rounded-pill bg-surface-2 p-1">
-        {(['1M', '6M', '1A'] as const).map((r) => (
+        {rangosVisibles.map((r) => (
           <button
             key={r}
             type="button"
