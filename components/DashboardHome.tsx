@@ -90,7 +90,10 @@ export function DashboardHome() {
             Marca un indicador como favorito para ver su evolucion aqui.
           </div>
         ) : (
-          <HistoryChart codigo={indicadorSeleccionado} />
+          <HistoryChart
+            codigo={indicadorSeleccionado}
+            fechaReferencia={data?.[indicadorSeleccionado]?.fecha}
+          />
         )}
       </section>
 

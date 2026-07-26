@@ -19,10 +19,10 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip,
 
 type Rango = '1M' | '6M' | '1A';
 
-const PUNTOS_POR_RANGO: Record<Rango, number> = {
-  '1M': 30,
-  '6M': 183,
-  '1A': Infinity,
+const MESES_POR_RANGO: Record<Rango, number> = {
+  '1M': 1,
+  '6M': 6,
+  '1A': 12,
 };
 
 const labelFormatter = new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: '2-digit' });
@@ -35,20 +35,29 @@ function getCssVar(name: string, fallback: string): string {
 
 interface HistoryChartProps {
   codigo: IndicadorCodigo;
+  // Fecha del dato mas reciente realmente disponible para este indicador (ej. la
+  // "fecha" del snapshot). Sirve de ancla para calcular los rangos 1M/6M/1A en vez
+  // de asumir que "hoy" tiene datos: para indicadores descontinuados o con rezago
+  // de publicacion, el ancla puede quedar muy atras en el tiempo. Si no se recibe,
+  // se usa la fecha actual.
+  fechaReferencia?: string | Date;
 }
 
-export function HistoryChart({ codigo }: HistoryChartProps) {
+export function HistoryChart({ codigo, fechaReferencia }: HistoryChartProps) {
   const [rango, setRango] = useState<Rango>('1M');
-  const anio = new Date().getFullYear();
-  const { data, isLoading, error } = useIndicadorHistory(codigo, anio);
+  const fechaAncla = useMemo(
+    () => (fechaReferencia ? new Date(fechaReferencia) : new Date()),
+    [fechaReferencia],
+  );
+  const { data, isLoading, error } = useIndicadorHistory(codigo, fechaAncla);
 
   const serieVisible = useMemo(() => {
     if (!data) return [];
-    // mindicador.cl devuelve la serie en orden descendente (mas reciente primero).
-    const puntos = PUNTOS_POR_RANGO[rango];
-    const recientes = Number.isFinite(puntos) ? data.serie.slice(0, puntos) : data.serie;
-    return recientes.slice().reverse();
-  }, [data, rango]);
+    const corte = new Date(fechaAncla);
+    corte.setMonth(corte.getMonth() - MESES_POR_RANGO[rango]);
+    const enRango = data.filter((punto) => new Date(punto.fecha) >= corte);
+    return enRango.slice().reverse();
+  }, [data, rango, fechaAncla]);
 
   const tendenciaUp =
     serieVisible.length >= 2
