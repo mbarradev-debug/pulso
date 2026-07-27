@@ -18,18 +18,18 @@ import type { IndicadorCodigo } from '@/types/indicador';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
-type Rango = '1M' | '6M' | '1A';
+type Rango = '1M' | '1A' | '2A';
 
-const RANGOS: readonly Rango[] = ['1M', '6M', '1A'];
+const RANGOS: readonly Rango[] = ['1M', '1A', '2A'];
 
 const MESES_POR_RANGO: Record<Rango, number> = {
   '1M': 1,
-  '6M': 6,
   '1A': 12,
+  '2A': 24,
 };
 
 // Indicadores con cadencia mensual o menor (ipc, utm, imacec, tasa_desempleo) pueden
-// tener 1-2 puntos en la ventana de 1M o 6M: no es un bug de datos, pero una pestana
+// tener pocos puntos en la ventana de 1M: no es un bug de datos, pero una pestana
 // con casi ningun punto se lee como un grafico roto. Se oculta dinamicamente segun
 // la cantidad real de puntos en cada rango, sin asumir de antemano que indicadores
 // son mensuales.
@@ -46,7 +46,7 @@ function getCssVar(name: string, fallback: string): string {
 interface HistoryChartProps {
   codigo: IndicadorCodigo;
   // Fecha del dato mas reciente realmente disponible para este indicador (ej. la
-  // "fecha" del snapshot). Sirve de ancla para calcular los rangos 1M/6M/1A en vez
+  // "fecha" del snapshot). Sirve de ancla para calcular los rangos 1M/1A/2A en vez
   // de asumir que "hoy" tiene datos: para indicadores descontinuados o con rezago
   // de publicacion, el ancla puede quedar muy atras en el tiempo. Si no se recibe,
   // se usa la fecha actual.
