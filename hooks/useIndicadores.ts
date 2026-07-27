@@ -3,7 +3,9 @@
 import useSWR from 'swr';
 import type { IndicadoresSnapshot } from '@/types/indicador';
 
-const ENDPOINT = '/api/indicadores';
+// Exportado para que app/page.tsx use la misma key al armar el `fallback` de
+// SWRConfig con el snapshot obtenido en el servidor.
+export const ENDPOINT_INDICADORES = '/api/indicadores';
 
 async function fetcher(url: string): Promise<IndicadoresSnapshot> {
   const response = await fetch(url);
@@ -20,7 +22,7 @@ export function useIndicadores() {
     error,
     isLoading,
     isValidating,
-  } = useSWR<IndicadoresSnapshot>(ENDPOINT, fetcher, {
+  } = useSWR<IndicadoresSnapshot>(ENDPOINT_INDICADORES, fetcher, {
     revalidateOnFocus: true,
     dedupingInterval: 60_000,
   });
