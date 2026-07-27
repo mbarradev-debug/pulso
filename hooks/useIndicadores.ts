@@ -15,10 +15,15 @@ async function fetcher(url: string): Promise<IndicadoresSnapshot> {
 }
 
 export function useIndicadores() {
-  const { data, error, isLoading } = useSWR<IndicadoresSnapshot>(ENDPOINT, fetcher, {
+  const {
+    data,
+    error,
+    isLoading,
+    isValidating,
+  } = useSWR<IndicadoresSnapshot>(ENDPOINT, fetcher, {
     revalidateOnFocus: true,
     dedupingInterval: 60_000,
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, isValidating, error };
 }

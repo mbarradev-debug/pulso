@@ -5,13 +5,15 @@ import { Button } from '@/components/Button';
 import { Converter } from '@/components/Converter';
 import { HistoryChart } from '@/components/HistoryChart';
 import { IndicatorCard } from '@/components/IndicatorCard';
+import { Skeleton } from '@/components/Skeleton';
+import { Spinner } from '@/components/Spinner';
 import { useFavoritos } from '@/hooks/useFavoritos';
 import { useIndicadores } from '@/hooks/useIndicadores';
 import { formatFecha } from '@/lib/format';
 import { INDICADOR_CODIGOS, type IndicadorCodigo } from '@/types/indicador';
 
 export function DashboardHome() {
-  const { data, isLoading, error } = useIndicadores();
+  const { data, isLoading, isValidating, error } = useIndicadores();
   const { favoritos } = useFavoritos();
   const [indicadorSeleccionado, setIndicadorSeleccionado] = useState<IndicadorCodigo>('dolar');
   const [mostrarConversor, setMostrarConversor] = useState(false);
@@ -54,8 +56,16 @@ export function DashboardHome() {
           <p className="mono text-xs text-foreground-secondary">Banco Central de Chile</p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-          <span className="mono text-2xs text-foreground-secondary">
-            Actualizado: {data ? formatFecha(data.fecha) : '—'}
+          <span className="mono flex items-center gap-1.5 text-2xs text-foreground-secondary">
+            Actualizado:{' '}
+            {data ? (
+              formatFecha(data.fecha)
+            ) : isLoading ? (
+              <Skeleton className="inline-block h-3 w-24 align-middle" />
+            ) : (
+              '—'
+            )}
+            {isValidating && <Spinner />}
           </span>
           <div className="flex gap-2">
             <Button

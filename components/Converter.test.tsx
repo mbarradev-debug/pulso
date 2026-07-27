@@ -49,6 +49,7 @@ describe('Converter', () => {
     vi.mocked(useIndicadores).mockReturnValue({
       data: makeSnapshot(),
       isLoading: false,
+      isValidating: false,
       error: undefined,
     });
   });
