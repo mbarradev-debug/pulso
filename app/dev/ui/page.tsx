@@ -25,14 +25,6 @@ const ipcEjemplo: Indicador = {
   valor: -0.2,
 };
 
-const dolarIntercambioEjemplo: Indicador = {
-  codigo: 'dolar_intercambio',
-  nombre: 'Dolar acuerdo',
-  unidad_medida: 'Pesos',
-  fecha: '2014-01-02T00:00:00.000Z',
-  valor: 758.87,
-};
-
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-10">
@@ -90,7 +82,6 @@ export default function UiShowcasePage() {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4">
           <IndicatorCard codigo="dolar" indicador={dolarEjemplo} />
           <IndicatorCard codigo="ipc" indicador={ipcEjemplo} />
-          <IndicatorCard codigo="dolar_intercambio" indicador={dolarIntercambioEjemplo} />
           <IndicatorCard codigo="utm" error />
           <IndicatorCard codigo="euro" isLoading />
         </div>
@@ -102,7 +93,7 @@ export default function UiShowcasePage() {
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <HistoryChart codigo="dolar" />
-          <HistoryChart codigo="bitcoin" />
+          <HistoryChart codigo="ipc" />
         </div>
       </section>
 

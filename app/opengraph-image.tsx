@@ -8,7 +8,7 @@ const indicators = [
   { code: 'UF', value: '$39.412,87', trend: 'up' as const, delta: '+0,03%' },
   { code: 'Dólar', value: '$963,12', trend: 'down' as const, delta: '-0,21%' },
   { code: 'Euro', value: '$1.041,55', trend: 'up' as const, delta: '+0,14%' },
-  { code: 'Bitcoin', value: '$62.480.900', trend: 'up' as const, delta: '+1,86%' },
+  { code: 'Cobre', value: 'US$6,17/lb', trend: 'up' as const, delta: '+0,52%' },
 ];
 
 const trendColor = { up: '#34d399', down: '#f87171' };

@@ -29,7 +29,6 @@ function makeSnapshot(): IndicadoresSnapshot {
     uf: makeIndicador({ codigo: 'uf', nombre: 'Unidad de fomento (UF)', valor: 40000 }),
     ivp: generico('ivp'),
     dolar: generico('dolar'),
-    dolar_intercambio: generico('dolar_intercambio'),
     euro: generico('euro'),
     ipc: makeIndicador({
       codigo: 'ipc',
@@ -42,7 +41,6 @@ function makeSnapshot(): IndicadoresSnapshot {
     tpm: generico('tpm'),
     libra_cobre: generico('libra_cobre'),
     tasa_desempleo: generico('tasa_desempleo'),
-    bitcoin: generico('bitcoin'),
   };
 }
 

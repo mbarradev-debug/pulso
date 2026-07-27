@@ -2,7 +2,6 @@ export const INDICADOR_CODIGOS = [
   'uf',
   'ivp',
   'dolar',
-  'dolar_intercambio',
   'euro',
   'ipc',
   'utm',
@@ -10,7 +9,6 @@ export const INDICADOR_CODIGOS = [
   'tpm',
   'libra_cobre',
   'tasa_desempleo',
-  'bitcoin',
 ] as const;
 
 export type IndicadorCodigo = (typeof INDICADOR_CODIGOS)[number];
@@ -30,7 +28,6 @@ export interface IndicadoresSnapshot {
   uf: Indicador;
   ivp: Indicador;
   dolar: Indicador;
-  dolar_intercambio: Indicador;
   euro: Indicador;
   ipc: Indicador;
   utm: Indicador;
@@ -38,7 +35,6 @@ export interface IndicadoresSnapshot {
   tpm: Indicador;
   libra_cobre: Indicador;
   tasa_desempleo: Indicador;
-  bitcoin: Indicador;
 }
 
 export interface SerieHistoricaPunto {

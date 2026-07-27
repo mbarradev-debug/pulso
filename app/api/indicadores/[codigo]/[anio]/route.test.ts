@@ -67,7 +67,7 @@ describe('GET /api/indicadores/[codigo]/[anio]', () => {
   it('responde 502 cuando la API externa falla para un codigo y anio validos', async () => {
     vi.mocked(fetch).mockRejectedValueOnce(new Error('fetch failed'));
 
-    const response = await callRoute('dolar_intercambio', '2026');
+    const response = await callRoute('dolar', '2026');
 
     expect(response.status).toBe(502);
     const body = (await response.json()) as { error: string };
