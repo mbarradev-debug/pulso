@@ -72,7 +72,9 @@ export function HistoryChart({ codigo, fechaReferencia, unidadMedida }: HistoryC
       return data.filter((punto) => new Date(punto.fecha) >= corte).length;
     };
     // "1A" siempre queda visible como respaldo, aunque no alcance el minimo.
-    return RANGOS.filter((r) => r === '1A' || contarEnRango(MESES_POR_RANGO[r]) >= MIN_PUNTOS_RANGO);
+    return RANGOS.filter(
+      (r) => r === '1A' || contarEnRango(MESES_POR_RANGO[r]) >= MIN_PUNTOS_RANGO,
+    );
   }, [data, fechaAncla]);
 
   const rangosVisiblesKey = rangosVisibles.join(',');
