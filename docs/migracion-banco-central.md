@@ -31,18 +31,18 @@ El usuario aportó `series.xlsx` — el catálogo completo de series públicas d
 
 ## Mapeo confirmado: código app → código Banco Central
 
-| Código app | Nombre mostrado | Código BC | Nombre serie (BC) | Cuadro (BC) | Frecuencia |
-|---|---|---|---|---|---|
-| `uf` | UF | `F073.UFF.PRE.Z.D` | Unidad de fomento (UF) | Indicadores de reajustabilidad diario | Diaria |
-| `ivp` | IVP | `F073.IVP.PRE.Z.D` | Índice de valor promedio (IVP) | Indicadores de reajustabilidad diario | Diaria |
-| `dolar` | Dólar observado | `F073.TCO.PRE.Z.D` | Dólar observado | Tipo de cambio | Diaria hábil |
-| `euro` | Euro | `F072.CLP.EUR.N.O.D` | Euro (Eurozona) | Tipo de cambio nominal distintas monedas (CLP por unidad de moneda extranjera) | Diaria hábil |
-| `ipc` | IPC | `F074.IPC.VAR.Z.Z.C.M` | IPC General | IPC, variación mensual, información histórica (%) | Mensual |
-| `utm` | UTM | `F073.UTR.PRE.Z.M` | Unidad tributaria mensual (UTM) | Indicadores de reajustabilidad | Mensual |
-| `imacec` | Imacec | `F032.IMC.V12.Z.Z.2018.Z.Z.0.M` | Imacec | Indicador mensual de actividad económica, contribución año/año, referencia 2018 (%) | Mensual |
-| `tpm` | TPM | `F022.TPM.TIN.D001.NO.Z.D` | Tasa de política monetaria (TPM) | Tasas de interés de referencia de la política monetaria | Diaria (vigente hasta próximo cambio de la política) |
-| `libra_cobre` | Libra de cobre | `F019.PPB.PRE.100.D` | Cobre refinado BML (USD/libra) | Precios de productos básicos | Diaria |
-| `tasa_desempleo` | Tasa de desempleo | `F049.DES.TAS.INE9.10.M` | Tasa de desocupación nacional (INE) | Tasas de desocupación, nacional y por región, INE (%) | Mensual |
+| Código app       | Nombre mostrado   | Código BC                       | Nombre serie (BC)                   | Cuadro (BC)                                                                         | Frecuencia                                           |
+| ---------------- | ----------------- | ------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `uf`             | UF                | `F073.UFF.PRE.Z.D`              | Unidad de fomento (UF)              | Indicadores de reajustabilidad diario                                               | Diaria                                               |
+| `ivp`            | IVP               | `F073.IVP.PRE.Z.D`              | Índice de valor promedio (IVP)      | Indicadores de reajustabilidad diario                                               | Diaria                                               |
+| `dolar`          | Dólar observado   | `F073.TCO.PRE.Z.D`              | Dólar observado                     | Tipo de cambio                                                                      | Diaria hábil                                         |
+| `euro`           | Euro              | `F072.CLP.EUR.N.O.D`            | Euro (Eurozona)                     | Tipo de cambio nominal distintas monedas (CLP por unidad de moneda extranjera)      | Diaria hábil                                         |
+| `ipc`            | IPC               | `F074.IPC.VAR.Z.Z.C.M`          | IPC General                         | IPC, variación mensual, información histórica (%)                                   | Mensual                                              |
+| `utm`            | UTM               | `F073.UTR.PRE.Z.M`              | Unidad tributaria mensual (UTM)     | Indicadores de reajustabilidad                                                      | Mensual                                              |
+| `imacec`         | Imacec            | `F032.IMC.V12.Z.Z.2018.Z.Z.0.M` | Imacec                              | Indicador mensual de actividad económica, contribución año/año, referencia 2018 (%) | Mensual                                              |
+| `tpm`            | TPM               | `F022.TPM.TIN.D001.NO.Z.D`      | Tasa de política monetaria (TPM)    | Tasas de interés de referencia de la política monetaria                             | Diaria (vigente hasta próximo cambio de la política) |
+| `libra_cobre`    | Libra de cobre    | `F019.PPB.PRE.100.D`            | Cobre refinado BML (USD/libra)      | Precios de productos básicos                                                        | Diaria                                               |
+| `tasa_desempleo` | Tasa de desempleo | `F049.DES.TAS.INE9.10.M`        | Tasa de desocupación nacional (INE) | Tasas de desocupación, nacional y por región, INE (%)                               | Mensual                                              |
 
 10 de los 12 códigos actuales tienen equivalente confirmado en el catálogo del Banco Central.
 
@@ -50,10 +50,10 @@ El usuario aportó `series.xlsx` — el catálogo completo de series públicas d
 
 ## Indicadores a eliminar
 
-| Código app | Motivo |
-|---|---|
-| `bitcoin` | **No existe** en el catálogo del Banco Central (0 coincidencias buscando "bitcoin"/"cripto" en 30.867 series) — el Banco Central no publica precios de criptoactivos. Se elimina de `INDICADOR_CODIGOS`, tipos, UI y tests. |
-| `dolar_intercambio` | Ya estaba descontinuado en mindicador.cl desde 2014-11-13 (ver memoria `mindicador_cadencias`). No se evaluó contra el catálogo de BC porque de todas formas no aporta valor — se elimina también. |
+| Código app          | Motivo                                                                                                                                                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bitcoin`           | **No existe** en el catálogo del Banco Central (0 coincidencias buscando "bitcoin"/"cripto" en 30.867 series) — el Banco Central no publica precios de criptoactivos. Se elimina de `INDICADOR_CODIGOS`, tipos, UI y tests. |
+| `dolar_intercambio` | Ya estaba descontinuado en mindicador.cl desde 2014-11-13 (ver memoria `mindicador_cadencias`). No se evaluó contra el catálogo de BC porque de todas formas no aporta valor — se elimina también.                          |
 
 ## Shape real de la respuesta (confirmado 2026-07-27, `GetSeries` sobre `uf`)
 
@@ -204,20 +204,20 @@ Esto está directamente relacionado con la "Decisión de diseño pendiente" de l
 
 ### Archivos con la palabra "mindicador" en sí (branding, docs, tests) — scope más amplio, confirmado por grep
 
-| Archivo | Qué contiene |
-|---|---|
-| `README.md` | 6 menciones — descripción del proyecto, instrucciones de setup, tabla de arquitectura, sección "Particularidades de los datos de mindicador.cl" |
-| `app/layout.tsx` | Título del sitio: `"Dashboard mindicador.cl"` |
-| `app/page.tsx` | Título de metadata: `"Dashboard mindicador.cl — Vista general"` |
-| `components/DashboardHome.tsx` | Texto visible en la UI: `"mindicador.cl"` |
-| `lib/mindicador-client.ts` | El cliente entero (`MindicadorApiError`, `BASE_URL`, mensajes de error) — se reemplaza completo por el cliente de SI3 |
-| `app/api/indicadores/route.ts` | Import de `getSnapshot` + mensaje de error `"...consultar mindicador.cl"` |
-| `app/api/indicadores/[codigo]/[anio]/route.ts` | Import de `getHistorico` + mismo mensaje de error |
-| `app/api/indicadores/route.test.ts` | Fixture con `autor: 'mindicador.cl'` |
-| `hooks/useIndicadores.test.tsx` | Fixture + mensajes de error de test |
-| `hooks/useIndicadorHistory.test.tsx` | Mensaje de error de test |
-| `e2e/mocks.ts` | Función `mockMindicadorApi()`, fixture `autor: 'mindicador.cl'` |
-| `e2e/dashboard.spec.ts` | Import y uso de `mockMindicadorApi` |
+| Archivo                                        | Qué contiene                                                                                                                                    |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `README.md`                                    | 6 menciones — descripción del proyecto, instrucciones de setup, tabla de arquitectura, sección "Particularidades de los datos de mindicador.cl" |
+| `app/layout.tsx`                               | Título del sitio: `"Dashboard mindicador.cl"`                                                                                                   |
+| `app/page.tsx`                                 | Título de metadata: `"Dashboard mindicador.cl — Vista general"`                                                                                 |
+| `components/DashboardHome.tsx`                 | Texto visible en la UI: `"mindicador.cl"`                                                                                                       |
+| `lib/mindicador-client.ts`                     | El cliente entero (`MindicadorApiError`, `BASE_URL`, mensajes de error) — se reemplaza completo por el cliente de SI3                           |
+| `app/api/indicadores/route.ts`                 | Import de `getSnapshot` + mensaje de error `"...consultar mindicador.cl"`                                                                       |
+| `app/api/indicadores/[codigo]/[anio]/route.ts` | Import de `getHistorico` + mismo mensaje de error                                                                                               |
+| `app/api/indicadores/route.test.ts`            | Fixture con `autor: 'mindicador.cl'`                                                                                                            |
+| `hooks/useIndicadores.test.tsx`                | Fixture + mensajes de error de test                                                                                                             |
+| `hooks/useIndicadorHistory.test.tsx`           | Mensaje de error de test                                                                                                                        |
+| `e2e/mocks.ts`                                 | Función `mockMindicadorApi()`, fixture `autor: 'mindicador.cl'`                                                                                 |
+| `e2e/dashboard.spec.ts`                        | Import y uso de `mockMindicadorApi`                                                                                                             |
 
 Nuevo con la migración (no es solo borrar texto): reemplazo completo de `lib/mindicador-client.ts` por un cliente equivalente para SI3, y un adaptador que traduzca la respuesta de `GetSeries` (`Series`/`SeriesInfos`) al shape actual (`Indicador`, `IndicadoresSnapshot`, `SerieHistorica`) para no tener que tocar los componentes downstream.
 
@@ -228,7 +228,7 @@ Nuevo con la migración (no es solo borrar texto): reemplazo completo de `lib/mi
 **Decidido:** el snapshot usa **fallback por indicador**, no por snapshot completo.
 
 - El caché deja de ser un `IndicadoresSnapshot` único que se reemplaza atómicamente, y pasa a ser un valor cacheado **por cada uno de los 10 códigos**.
-- En cada refresh se disparan las 10 llamadas a `GetSeries` en paralelo (ya confirmado seguro y rápido, ~0,2s — ver sección de rate limits). Cada llamada que responde bien actualiza *solo ese* valor en el caché; cada una que falla deja el valor cacheado anterior de *ese* indicador, sin tocar el resto.
+- En cada refresh se disparan las 10 llamadas a `GetSeries` en paralelo (ya confirmado seguro y rápido, ~0,2s — ver sección de rate limits). Cada llamada que responde bien actualiza _solo ese_ valor en el caché; cada una que falla deja el valor cacheado anterior de _ese_ indicador, sin tocar el resto.
 - El snapshot servido es "lo mejor disponible por indicador en ese momento" — mezcla de datos frescos con, ocasionalmente, algún valor stale puntual, en vez de todo-fresco-o-todo-stale.
 - **Falla total** (los 10 fallan, ej. Banco Central caído): mismo comportamiento que hoy — se sirve el último snapshot completo bueno en caché, o error si nunca hubo uno (arranque en frío).
 

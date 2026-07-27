@@ -1,4 +1,9 @@
-import type { Indicador, IndicadorCodigo, SerieHistorica, SerieHistoricaPunto } from '@/types/indicador';
+import type {
+  Indicador,
+  IndicadorCodigo,
+  SerieHistorica,
+  SerieHistoricaPunto,
+} from '@/types/indicador';
 
 const BASE_URL = 'https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx';
 const REQUEST_TIMEOUT_MS = 8000;
@@ -36,7 +41,11 @@ const SERIES: Record<IndicadorCodigo, SerieMeta> = {
     nombre: 'Unidad Tributaria Mensual (UTM)',
     unidadMedida: 'Pesos',
   },
-  imacec: { codigoSerie: 'F032.IMC.V12.Z.Z.2018.Z.Z.0.M', nombre: 'Imacec', unidadMedida: 'Porcentaje' },
+  imacec: {
+    codigoSerie: 'F032.IMC.V12.Z.Z.2018.Z.Z.0.M',
+    nombre: 'Imacec',
+    unidadMedida: 'Porcentaje',
+  },
   tpm: {
     codigoSerie: 'F022.TPM.TIN.D001.NO.Z.D',
     nombre: 'Tasa de Politica Monetaria (TPM)',

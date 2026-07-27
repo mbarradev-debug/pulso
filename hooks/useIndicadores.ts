@@ -17,15 +17,14 @@ async function fetcher(url: string): Promise<IndicadoresSnapshot> {
 }
 
 export function useIndicadores() {
-  const {
-    data,
-    error,
-    isLoading,
-    isValidating,
-  } = useSWR<IndicadoresSnapshot>(ENDPOINT_INDICADORES, fetcher, {
-    revalidateOnFocus: true,
-    dedupingInterval: 60_000,
-  });
+  const { data, error, isLoading, isValidating } = useSWR<IndicadoresSnapshot>(
+    ENDPOINT_INDICADORES,
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      dedupingInterval: 60_000,
+    },
+  );
 
   return { data, isLoading, isValidating, error };
 }

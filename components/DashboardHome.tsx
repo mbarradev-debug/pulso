@@ -28,7 +28,9 @@ export function DashboardHome() {
 
   const codigosVisibles = useMemo(
     () =>
-      soloFavoritos ? codigosOrdenados.filter((codigo) => favoritos.includes(codigo)) : codigosOrdenados,
+      soloFavoritos
+        ? codigosOrdenados.filter((codigo) => favoritos.includes(codigo))
+        : codigosOrdenados,
     [soloFavoritos, codigosOrdenados, favoritos],
   );
 
