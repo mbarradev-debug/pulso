@@ -3,8 +3,8 @@ import type { Page } from '@playwright/test';
 // Snapshot mockeado: valores redondos para que los calculos del conversor en
 // los tests sean predecibles (ej. UF en 40.000 -> 100.000 / 40.000 = 2,5).
 const SNAPSHOT_MOCK = {
-  version: '1.7.0',
-  autor: 'mindicador.cl',
+  version: '2.0',
+  autor: 'Banco Central de Chile',
   fecha: '2026-07-25T00:00:00.000Z',
   uf: {
     codigo: 'uf',
@@ -92,8 +92,8 @@ function serieMockPara(codigo: string) {
 
 // Mockea la API a nivel de Playwright (interceptando lo que pide el navegador
 // a nuestras propias rutas /api/*) para que los tests E2E nunca dependan de
-// que mindicador.cl este disponible.
-export async function mockMindicadorApi(page: Page) {
+// que el Banco Central este disponible.
+export async function mockIndicadoresApi(page: Page) {
   await page.route('**/api/indicadores', async (route) => {
     await route.fulfill({ json: SNAPSHOT_MOCK });
   });

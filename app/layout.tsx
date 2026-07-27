@@ -16,7 +16,7 @@ const firaCode = Fira_Code({
 });
 
 const SITE_URL = 'https://pulso-cyan-zeta.vercel.app';
-const TITLE = 'Dashboard mindicador.cl';
+const TITLE = 'Pulso — Indicadores económicos de Chile';
 const DESCRIPTION =
   'Panel de indicadores económicos de Chile en tiempo real: UF, dólar, euro, IPC, TPM y más.';
 

@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/mbarradev-debug/pulso/actions/workflows/ci.yml/badge.svg)
 
-Dashboard que consume la API pública de [mindicador.cl](https://mindicador.cl) para mostrar en tiempo (casi) real los 12 indicadores económicos de Chile: UF, dólar, euro, IPC, UTM, IMACEC, TPM, libra de cobre, tasa de desempleo, bitcoin, IVP y dólar acuerdo. Incluye gráfico histórico por indicador, favoritos persistentes y un conversor de monto entre CLP y cualquier indicador.
+Dashboard que consume la API SI3 del [Banco Central de Chile](https://si3.bcentral.cl) para mostrar en tiempo (casi) real 10 indicadores económicos de Chile: UF, IVP, dólar, euro, IPC, UTM, IMACEC, TPM, libra de cobre y tasa de desempleo. Incluye gráfico histórico por indicador, favoritos persistentes y un conversor de monto entre CLP y cualquier indicador.
 
 ![Vista general del dashboard](docs/dashboard-screenshot.jpg)
 
@@ -46,33 +46,33 @@ Otros scripts disponibles:
 ```
 app/
   page.tsx                              → home, renderiza DashboardHome
-  api/indicadores/route.ts              → GET snapshot de los 12 indicadores
-  api/indicadores/[codigo]/[anio]/      → GET histórico anual de un indicador
+  api/indicadores/route.ts              → GET snapshot de los 10 indicadores (fallback por indicador si alguno falla)
+  api/indicadores/[codigo]/[anio]/      → GET histórico anual de un indicador (rango de fechas explícito hacia Banco Central)
   dev/ui/                                → catálogo interno de componentes (solo en dev, bloqueado en prod)
 components/                             → DashboardHome, IndicatorCard, HistoryChart, Converter, etc.
 hooks/                                  → useIndicadores, useIndicadorHistory, useFavoritos
-lib/mindicador-client.ts                → cliente HTTP hacia mindicador.cl (timeout, manejo de errores)
-types/indicador.ts                      → tipos y los 12 códigos de indicador soportados
+lib/bcentral-client.ts                  → cliente HTTP hacia la API SI3 del Banco Central (encoding Latin-1, timeout, manejo de errores)
+types/indicador.ts                      → tipos y los 10 códigos de indicador soportados
 ```
 
-La app nunca llama a `mindicador.cl` desde el navegador: los componentes cliente consumen `/api/indicadores*` vía SWR, y esos Route Handlers son los que hacen el `fetch` server-side hacia mindicador.cl (con cache/`revalidate` de Next.js y un fallback al último snapshot bueno si la API externa falla).
+La app nunca llama a la API del Banco Central desde el navegador: los componentes cliente consumen `/api/indicadores*` vía SWR, y esos Route Handlers son los que hacen el `fetch` server-side (con un cache por indicador en memoria y fallback al último valor bueno conocido si la API externa falla).
 
 `proxy.ts` bloquea `/dev/ui` en producción (devuelve 404), ya que es una ruta de desarrollo interna.
 
-### Particularidades de los datos de mindicador.cl
+### Particularidades de los datos del Banco Central
 
 No todos los indicadores se actualizan igual — esto afecta cómo se calculan rangos y variaciones en `HistoryChart`/`useIndicadorHistory`:
 
 - **Diarios**: `uf`, `ivp`
 - **Diarios hábiles** (solo días de mercado): `dolar`, `euro`, `libra_cobre`, `tpm`
-- **Semanal aprox.**: `bitcoin` (~52 puntos/año pese a ser un mercado 24/7)
 - **Mensuales**: `ipc`, `utm`, `imacec`, `tasa_desempleo`
-- **Descontinuado**: `dolar_intercambio` — sin datos reales desde 2014-11-13
+
+La API del Banco Central (SI3) tiene además varios comportamientos no obvios que `lib/bcentral-client.ts` encapsula — el detalle completo está en `docs/migracion-banco-central.md`, pero en resumen: la respuesta viene codificada en Latin-1 (no UTF-8), las fechas vienen como `DD-MM-YYYY`, los errores se señalizan con `Codigo != 0` en el body aunque el HTTP sea 200, y los días sin dato no se marcan de forma uniforme entre series (algunas usan `statusCode: "ND"`, otras directamente omiten la fecha).
 
 ## Testing
 
 - **Unitarios/componentes** (`npm run test`): Vitest + Testing Library, cubren hooks, componentes de UI y los Route Handlers.
-- **E2E** (`npm run test:e2e`): Playwright contra el build de producción (`playwright.config.ts` levanta `next build && next start` automáticamente). Los mocks de red interceptan las rutas propias de la app (`/api/indicadores*`), no `mindicador.cl`, para que los tests no dependan de la API externa.
+- **E2E** (`npm run test:e2e`): Playwright contra el build de producción (`playwright.config.ts` levanta `next build && next start` automáticamente). Los mocks de red interceptan las rutas propias de la app (`/api/indicadores*`), no el Banco Central, para que los tests no dependan de la API externa.
 
 ## Git hooks
 
