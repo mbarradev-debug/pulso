@@ -2,6 +2,11 @@ import type { Indicador, IndicadorCodigo, SerieHistorica, SerieHistoricaPunto } 
 
 const BASE_URL = 'https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx';
 const REQUEST_TIMEOUT_MS = 8000;
+// Debe coincidir con `export const revalidate` en los Route Handlers que usan
+// este cliente (app/api/indicadores/route.ts y .../[codigo]/[anio]/route.ts)
+// — ese valor tiene que ser un literal estatico, no puede importar esta
+// constante, asi que hay que mantenerlos sincronizados a mano.
+const REVALIDATE_SECONDS = 300;
 
 interface SerieMeta {
   codigoSerie: string;
@@ -112,7 +117,18 @@ async function llamarGetSeries(
 
   let buffer: ArrayBuffer;
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    // NOTA: si Banco Central responde con un error a nivel de body (Codigo
+    // distinto de 0, ver mas abajo) el HTTP sigue siendo 200 - Next.js igual
+    // cachea esa respuesta como si fuera valida por REVALIDATE_SECONDS. No
+    // se intenta evitar esto: el fallback por indicador (ver
+    // app/api/indicadores/route.ts) ya cubre ese caso sirviendo el ultimo
+    // valor bueno cacheado, asi que el peor escenario es no poder
+    // "recuperarse" de un error transitorio de Banco Central hasta que
+    // venza la ventana de cache, no un dato peor que el que ya se mostraba.
+    const response = await fetch(url, {
+      signal: controller.signal,
+      next: { revalidate: REVALIDATE_SECONDS },
+    });
     buffer = await response.arrayBuffer();
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
