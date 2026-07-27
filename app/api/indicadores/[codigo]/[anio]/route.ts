@@ -2,6 +2,14 @@ import { NextResponse } from 'next/server';
 import { BancoCentralApiError, getSerieHistorica } from '@/lib/bcentral-client';
 import { INDICADOR_CODIGOS, type IndicadorCodigo } from '@/types/indicador';
 
+// Los Route Handlers no cachean por defecto en esta version de Next.js (sin
+// Cache Components): hace falta "dynamic = 'force-static'" ademas del
+// `next.revalidate` en el fetch de lib/bcentral-client.ts para que el
+// resultado efectivamente participe del cache. El numero debe coincidir con
+// REVALIDATE_SECONDS alla.
+export const dynamic = 'force-static';
+export const revalidate = 300;
+
 const MIN_ANIO = 1970;
 
 function isIndicadorCodigo(value: string): value is IndicadorCodigo {

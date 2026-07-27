@@ -7,6 +7,14 @@ import {
   type IndicadoresSnapshot,
 } from '@/types/indicador';
 
+// Los Route Handlers no cachean por defecto en esta version de Next.js (sin
+// Cache Components): hace falta "dynamic = 'force-static'" ademas del
+// `next.revalidate` en el fetch de lib/bcentral-client.ts para que el
+// resultado efectivamente participe del cache. El numero debe coincidir con
+// REVALIDATE_SECONDS alla.
+export const dynamic = 'force-static';
+export const revalidate = 300;
+
 // Cache por indicador (no un snapshot unico): cada codigo guarda su ultimo
 // valor exitoso de forma independiente. El snapshot son 10 llamadas
 // independientes a Banco Central - si una falla, se sirve el ultimo valor
