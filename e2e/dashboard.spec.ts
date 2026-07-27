@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { mockMindicadorApi } from './mocks';
+import { mockIndicadoresApi } from './mocks';
 
 test.beforeEach(async ({ page }) => {
-  // Toda la API de mindicador.cl queda mockeada a nivel de Playwright: estos
+  // Toda la API de indicadores queda mockeada a nivel de Playwright: estos
   // tests nunca dependen de que el servicio externo este disponible.
-  await mockMindicadorApi(page);
+  await mockIndicadoresApi(page);
 });
 
 test('carga el dashboard y muestra al menos un indicador con valor visible', async ({ page }) => {

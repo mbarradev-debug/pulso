@@ -32,7 +32,7 @@ describe('useIndicadores', () => {
   it('retorna el snapshot cuando el fetch es exitoso', async () => {
     const snapshot = {
       version: '1.0',
-      autor: 'mindicador.cl',
+      autor: 'Banco Central de Chile',
       fecha: '2026-07-25T00:00:00.000Z',
       uf: {
         codigo: 'uf',
@@ -58,7 +58,7 @@ describe('useIndicadores', () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: false,
       status: 502,
-      json: async () => ({ error: 'mindicador.cl no responde' }),
+      json: async () => ({ error: 'Banco Central no responde' }),
     } as Response);
 
     const { result } = renderHook(() => useIndicadores(), { wrapper });
@@ -66,6 +66,6 @@ describe('useIndicadores', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.data).toBeUndefined();
     expect(result.current.error).toBeInstanceOf(Error);
-    expect((result.current.error as Error).message).toBe('mindicador.cl no responde');
+    expect((result.current.error as Error).message).toBe('Banco Central no responde');
   });
 });

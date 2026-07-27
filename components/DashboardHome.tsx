@@ -51,7 +51,7 @@ export function DashboardHome() {
           <h1 className="text-lg font-semibold tracking-tight text-foreground">
             Indicadores Chile
           </h1>
-          <p className="mono text-xs text-foreground-secondary">mindicador.cl</p>
+          <p className="mono text-xs text-foreground-secondary">Banco Central de Chile</p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <span className="mono text-2xs text-foreground-secondary">

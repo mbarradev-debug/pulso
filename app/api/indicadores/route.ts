@@ -7,11 +7,11 @@ import {
   type IndicadoresSnapshot,
 } from '@/types/indicador';
 
-// Cache por indicador (no un snapshot unico como con mindicador.cl): cada
-// codigo guarda su ultimo valor exitoso de forma independiente. Con Banco
-// Central el snapshot son 10 llamadas independientes en vez de 1 - si una
-// falla, se sirve el ultimo valor cacheado de ESE indicador sin afectar al
-// resto (ver docs/migracion-banco-central.md, decision de resiliencia).
+// Cache por indicador (no un snapshot unico): cada codigo guarda su ultimo
+// valor exitoso de forma independiente. El snapshot son 10 llamadas
+// independientes a Banco Central - si una falla, se sirve el ultimo valor
+// cacheado de ESE indicador sin afectar al resto (ver
+// docs/migracion-banco-central.md, decision de resiliencia).
 const cachePorIndicador = new Map<IndicadorCodigo, Indicador>();
 
 async function obtenerConFallback(codigo: IndicadorCodigo): Promise<Indicador | undefined> {

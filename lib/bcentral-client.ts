@@ -78,8 +78,8 @@ interface RespuestaGetSeries {
   };
 }
 
-// "DD-MM-YYYY" (formato de Banco Central) -> ISO 8601. No es el mismo formato
-// que devolvia mindicador.cl, hay que parsearlo explicitamente.
+// "DD-MM-YYYY" (formato de Banco Central) -> ISO 8601. Hay que parsearlo
+// explicitamente, no es el formato ISO estandar.
 function parseFechaBanco(indexDateString: string): string {
   const [dia, mes, anio] = indexDateString.split('-');
   return new Date(Date.UTC(Number(anio), Number(mes) - 1, Number(dia))).toISOString();

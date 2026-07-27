@@ -13,10 +13,9 @@ function fechaISO(date: Date): string {
 }
 
 // Banco Central pide rangos de fechas explicitos (firstdate/lastdate), no
-// anios calendario como mindicador.cl. Se deriva el rango del anio pedido: 1
-// de enero a 31 de diciembre, salvo que sea el anio en curso, donde se corta
-// en "hoy" para no pedir fechas futuras sin necesidad (ver
-// docs/migracion-banco-central.md).
+// anios calendario. Se deriva el rango del anio pedido: 1 de enero a 31 de
+// diciembre, salvo que sea el anio en curso, donde se corta en "hoy" para no
+// pedir fechas futuras sin necesidad (ver docs/migracion-banco-central.md).
 function rangoDelAnio(anio: number): { firstdate: string; lastdate: string } {
   const hoy = new Date();
   const firstdate = `${anio}-01-01`;
