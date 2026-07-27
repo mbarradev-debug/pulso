@@ -27,13 +27,6 @@ const SNAPSHOT_MOCK = {
     fecha: '2026-07-25T00:00:00.000Z',
     valor: 950,
   },
-  dolar_intercambio: {
-    codigo: 'dolar_intercambio',
-    nombre: 'Dolar acuerdo',
-    unidad_medida: 'Pesos',
-    fecha: '2014-11-13T00:00:00.000Z',
-    valor: 759,
-  },
   euro: {
     codigo: 'euro',
     nombre: 'Euro',
@@ -82,13 +75,6 @@ const SNAPSHOT_MOCK = {
     unidad_medida: 'Porcentaje',
     fecha: '2026-05-01T00:00:00.000Z',
     valor: 9.44,
-  },
-  bitcoin: {
-    codigo: 'bitcoin',
-    nombre: 'Bitcoin',
-    unidad_medida: 'Dolar',
-    fecha: '2026-07-24T00:00:00.000Z',
-    valor: 64000,
   },
 };
 

@@ -74,26 +74,26 @@ describe('useIndicadorHistory', () => {
   it('recupera datos parciales si un solo anio falla (error aislado)', async () => {
     vi.mocked(fetch).mockImplementation(async (input) => {
       const url = String(input);
-      if (url.includes('/dolar_intercambio/2026')) {
+      if (url.includes('/euro/2026')) {
         return { ok: false, status: 502, json: async () => ({ error: 'sin datos' }) } as Response;
       }
       return {
         ok: true,
         json: async () => ({
-          codigo: 'dolar_intercambio',
-          nombre: 'Dolar acuerdo',
+          codigo: 'euro',
+          nombre: 'Euro',
           unidad_medida: 'Pesos',
-          serie: [{ fecha: '2025-11-13T00:00:00.000Z', valor: 758.87 }],
+          serie: [{ fecha: '2025-12-01T00:00:00.000Z', valor: 1080 }],
         }),
       } as Response;
     });
 
-    const { result } = renderHook(() => useIndicadorHistory('dolar_intercambio', fechaAncla), {
+    const { result } = renderHook(() => useIndicadorHistory('euro', fechaAncla), {
       wrapper,
     });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
-    expect(result.current.data).toEqual([{ fecha: '2025-11-13T00:00:00.000Z', valor: 758.87 }]);
+    expect(result.current.data).toEqual([{ fecha: '2025-12-01T00:00:00.000Z', valor: 1080 }]);
     expect(result.current.error).toBeUndefined();
   });
 

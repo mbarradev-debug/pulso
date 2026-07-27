@@ -56,19 +56,7 @@ export function IndicatorCard({
           {isLoading ? (
             <Skeleton className="h-3 w-14" />
           ) : (
-            <>
-              <span className="truncate">{codigo}</span>
-              {codigo === 'dolar_intercambio' && (
-                <span
-                  className="flex-none text-accent"
-                  role="img"
-                  aria-label="Historico, sin actualizacion desde 2014"
-                  title="Historico, sin actualizacion desde 2014"
-                >
-                  †
-                </span>
-              )}
-            </>
+            <span className="truncate">{codigo}</span>
           )}
         </div>
         <FavoritesToggle

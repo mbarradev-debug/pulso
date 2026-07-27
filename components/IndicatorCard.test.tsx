@@ -19,14 +19,6 @@ const ipcEjemplo: Indicador = {
   valor: -0.2,
 };
 
-const dolarIntercambioEjemplo: Indicador = {
-  codigo: 'dolar_intercambio',
-  nombre: 'Dólar acuerdo',
-  unidad_medida: 'Pesos',
-  fecha: '2014-11-13T03:00:00.000Z',
-  valor: 758.87,
-};
-
 describe('IndicatorCard', () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -57,17 +49,5 @@ describe('IndicatorCard', () => {
   it('no muestra "Dato no disponible" mientras esta cargando, aunque no haya indicador', () => {
     render(<IndicatorCard codigo="dolar" isLoading />);
     expect(screen.queryByText('Dato no disponible')).not.toBeInTheDocument();
-  });
-
-  it('muestra la nota accesible de dolar_intercambio', () => {
-    render(<IndicatorCard codigo="dolar_intercambio" indicador={dolarIntercambioEjemplo} />);
-    expect(
-      screen.getByRole('img', { name: /sin actualizacion desde 2014/i }),
-    ).toBeInTheDocument();
-  });
-
-  it('no muestra la nota de dolar_intercambio para otros indicadores', () => {
-    render(<IndicatorCard codigo="dolar" indicador={dolarEjemplo} />);
-    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 });
