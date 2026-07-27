@@ -20,10 +20,13 @@ Requisitos: Node 26+, npm.
 
 ```bash
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
-Abrir [http://localhost:3000](http://localhost:3000). No se necesitan variables de entorno: la app consulta `https://mindicador.cl/api` directamente desde sus propios Route Handlers.
+Completar `.env.local` con `BCENTRAL_USER`/`BCENTRAL_PASS` — credenciales de la API SI3 del Banco Central de Chile (requiere registro en [si3.bcentral.cl](https://si3.bcentral.cl)). Son server-only: se leen únicamente en Route Handlers/lib del lado del servidor, nunca en componentes cliente.
+
+Abrir [http://localhost:3000](http://localhost:3000).
 
 Otros scripts disponibles:
 
