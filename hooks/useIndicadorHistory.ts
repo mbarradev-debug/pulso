@@ -23,25 +23,26 @@ async function fetchSerieAnioSeguro(codigo: IndicadorCodigo, anio: number): Prom
   }
 }
 
-// Se traen el anio de la fecha ancla y el anterior: cualquier rango de hasta 12 meses
-// hacia atras desde el ancla cae siempre dentro de esos dos anios calendario.
+// Se traen el anio de la fecha ancla y los 2 anteriores: el rango mas largo del
+// selector es 2A (24 meses), y un rango de hasta 24 meses hacia atras desde el
+// ancla puede caer en 3 anios calendario distintos (ej. ancla en enero 2026 ->
+// 24 meses atras cae en enero 2024).
+const ANIOS_HACIA_ATRAS = 2;
+
 export function useIndicadorHistory(codigo: IndicadorCodigo, fechaAncla: Date) {
   const anioAncla = fechaAncla.getFullYear();
-  const anioPrevio = anioAncla - 1;
+  const anios = Array.from({ length: ANIOS_HACIA_ATRAS + 1 }, (_, i) => anioAncla - i);
 
   const { data, error, isLoading } = useSWR(['historico', codigo, anioAncla], async () => {
-    const [actual, previo] = await Promise.all([
-      fetchSerieAnioSeguro(codigo, anioAncla),
-      fetchSerieAnioSeguro(codigo, anioPrevio),
-    ]);
+    const series = await Promise.all(anios.map((anio) => fetchSerieAnioSeguro(codigo, anio)));
 
-    if (actual.length === 0 && previo.length === 0) {
+    if (series.every((serie) => serie.length === 0)) {
       throw new Error(`No se pudo obtener el historico de ${codigo}`);
     }
 
-    return [...actual, ...previo].sort(
-      (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
-    );
+    return series
+      .flat()
+      .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
   });
 
   return { data, isLoading, error };
