@@ -33,7 +33,12 @@ export function useIndicadorHistory(codigo: IndicadorCodigo, fechaAncla: Date) {
   const anioAncla = fechaAncla.getFullYear();
   const anios = Array.from({ length: ANIOS_HACIA_ATRAS + 1 }, (_, i) => anioAncla - i);
 
-  const { data, error, isLoading } = useSWR(['historico', codigo, anioAncla], async () => {
+  const {
+    data,
+    error,
+    isLoading,
+    isValidating,
+  } = useSWR(['historico', codigo, anioAncla], async () => {
     const series = await Promise.all(anios.map((anio) => fetchSerieAnioSeguro(codigo, anio)));
 
     if (series.every((serie) => serie.length === 0)) {
@@ -45,5 +50,5 @@ export function useIndicadorHistory(codigo: IndicadorCodigo, fechaAncla: Date) {
       .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, isValidating, error };
 }
