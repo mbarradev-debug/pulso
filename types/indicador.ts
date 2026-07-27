@@ -21,20 +21,24 @@ export interface Indicador {
   valor: number;
 }
 
+// Los campos de indicador son opcionales: con Banco Central el snapshot se
+// arma a partir de 10 llamadas independientes con fallback por indicador
+// (ver app/api/indicadores/route.ts) - un indicador puede quedar ausente si
+// su llamada fallo y tampoco habia nada cacheado todavia para el.
 export interface IndicadoresSnapshot {
   version: string;
   autor: string;
   fecha: string;
-  uf: Indicador;
-  ivp: Indicador;
-  dolar: Indicador;
-  euro: Indicador;
-  ipc: Indicador;
-  utm: Indicador;
-  imacec: Indicador;
-  tpm: Indicador;
-  libra_cobre: Indicador;
-  tasa_desempleo: Indicador;
+  uf?: Indicador;
+  ivp?: Indicador;
+  dolar?: Indicador;
+  euro?: Indicador;
+  ipc?: Indicador;
+  utm?: Indicador;
+  imacec?: Indicador;
+  tpm?: Indicador;
+  libra_cobre?: Indicador;
+  tasa_desempleo?: Indicador;
 }
 
 export interface SerieHistoricaPunto {

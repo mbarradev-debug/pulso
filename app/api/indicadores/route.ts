@@ -1,23 +1,60 @@
 import { NextResponse } from 'next/server';
-import { getSnapshot } from '@/lib/mindicador-client';
-import type { IndicadoresSnapshot } from '@/types/indicador';
+import { BancoCentralApiError, getUltimoValor } from '@/lib/bcentral-client';
+import {
+  INDICADOR_CODIGOS,
+  type Indicador,
+  type IndicadorCodigo,
+  type IndicadoresSnapshot,
+} from '@/types/indicador';
 
-const REVALIDATE_SECONDS = 300;
+// Cache por indicador (no un snapshot unico como con mindicador.cl): cada
+// codigo guarda su ultimo valor exitoso de forma independiente. Con Banco
+// Central el snapshot son 10 llamadas independientes en vez de 1 - si una
+// falla, se sirve el ultimo valor cacheado de ESE indicador sin afectar al
+// resto (ver docs/migracion-banco-central.md, decision de resiliencia).
+const cachePorIndicador = new Map<IndicadorCodigo, Indicador>();
 
-let lastSnapshot: IndicadoresSnapshot | null = null;
+async function obtenerConFallback(codigo: IndicadorCodigo): Promise<Indicador | undefined> {
+  try {
+    const indicador = await getUltimoValor(codigo);
+    cachePorIndicador.set(codigo, indicador);
+    return indicador;
+  } catch (error) {
+    if (error instanceof BancoCentralApiError) {
+      console.error(
+        `Banco Central fallo para ${codigo} (serie ${error.codigoSerie}, Codigo ${error.codigoRespuesta ?? 'N/A'}): ${error.message}`,
+      );
+    } else {
+      console.error(`Error inesperado obteniendo ${codigo} de Banco Central:`, error);
+    }
+    return cachePorIndicador.get(codigo);
+  }
+}
 
 export async function GET() {
-  try {
-    const snapshot = await getSnapshot({ revalidate: REVALIDATE_SECONDS });
-    lastSnapshot = snapshot;
-    return NextResponse.json(snapshot, { status: 200 });
-  } catch (error) {
-    if (lastSnapshot) {
-      return NextResponse.json(lastSnapshot, { status: 200 });
-    }
+  const resultados = await Promise.all(INDICADOR_CODIGOS.map(obtenerConFallback));
 
-    const message =
-      error instanceof Error ? error.message : 'Error desconocido al consultar mindicador.cl';
-    return NextResponse.json({ error: message }, { status: 502 });
+  const indicadores: Partial<Record<IndicadorCodigo, Indicador>> = {};
+  INDICADOR_CODIGOS.forEach((codigo, indice) => {
+    const valor = resultados[indice];
+    if (valor) {
+      indicadores[codigo] = valor;
+    }
+  });
+
+  if (Object.keys(indicadores).length === 0) {
+    return NextResponse.json(
+      { error: 'No se pudo obtener ningun indicador desde el Banco Central' },
+      { status: 502 },
+    );
   }
+
+  const snapshot: IndicadoresSnapshot = {
+    version: '2.0',
+    autor: 'Banco Central de Chile',
+    fecha: new Date().toISOString(),
+    ...indicadores,
+  };
+
+  return NextResponse.json(snapshot, { status: 200 });
 }
