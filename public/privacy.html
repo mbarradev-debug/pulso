@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index" />
+    <title>Política de privacidad — Pulso UF y Dólar</title>
+    <style>
+      :root {
+        --bg: #0b0b0c;
+        --card: #181819;
+        --border: #272729;
+        --accent: #f0ad33;
+        --fg: #fafafa;
+        --fg-muted: #a1a1aa;
+        --fg-subtle: #8f8f96;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 64px 24px 96px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 40px;
+      }
+      .brand svg {
+        display: block;
+        border-radius: 12px;
+      }
+      .brand span {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: -0.01em;
+      }
+      h1 {
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 0 0 6px;
+      }
+      .updated {
+        color: var(--fg-subtle);
+        font-size: 14px;
+        margin: 0 0 40px;
+      }
+      h2 {
+        font-size: 17px;
+        font-weight: 600;
+        margin: 36px 0 10px;
+        color: var(--fg);
+      }
+      p {
+        margin: 0 0 14px;
+        color: var(--fg-muted);
+      }
+      strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      ul {
+        margin: 0 0 14px;
+        padding-left: 22px;
+        color: var(--fg-muted);
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      code {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 1px 6px;
+        font-size: 0.9em;
+        color: var(--fg);
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .lead {
+        border-left: 2px solid var(--accent);
+        background: var(--card);
+        padding: 16px 18px;
+        border-radius: 8px;
+        margin: 0 0 28px;
+      }
+      .lead p:last-child {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="brand">
+        <svg width="32" height="32" viewBox="0 0 128 128" aria-hidden="true">
+          <rect width="128" height="128" rx="29" fill="#0b0b0c" />
+          <path
+            d="M18 66 H44 L52 79 L64 28 L77 98 L86 66 H110"
+            fill="none"
+            stroke="#f0ad33"
+            stroke-width="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span>Pulso UF y Dólar</span>
+      </div>
+
+      <h1>Política de privacidad</h1>
+      <p class="updated">Última actualización: 28 de agosto de 2026</p>
+
+      <div class="lead">
+        <p>
+          <strong>Pulso UF y Dólar</strong> no recopila, almacena ni transmite datos personales. No
+          hay cuentas, analítica, telemetría ni identificadores de seguimiento.
+        </p>
+      </div>
+
+      <h2>Qué se guarda y dónde</h2>
+      <p>
+        La extensión guarda <strong>únicamente en el almacenamiento local de tu navegador</strong>
+        (<code>chrome.storage.local</code>) tus preferencias de uso:
+      </p>
+      <ul>
+        <li>qué indicadores eliges mostrar en el popup;</li>
+        <li>la unidad y la dirección seleccionadas en el conversor.</li>
+      </ul>
+      <p>
+        Esta información <strong>nunca sale de tu dispositivo</strong>: no se sincroniza entre
+        equipos ni se envía a ningún servidor. Se elimina si desinstalas la extensión o borras los
+        datos del navegador.
+      </p>
+
+      <h2>Conexiones de red</h2>
+      <p>
+        Para mostrar los valores, la extensión hace peticiones a la API pública de Pulso
+        (<code>https://pulso-cyan-zeta.vercel.app</code>), que a su vez obtiene los datos del Banco
+        Central de Chile. Estas peticiones sólo solicitan los valores de los indicadores y no
+        incluyen ninguna información sobre ti.
+      </p>
+
+      <h2>Contacto</h2>
+      <p>
+        Para consultas sobre esta política, escribe a
+        <a href="mailto:mbarra.git@gmail.com">mbarra.git@gmail.com</a>.
+      </p>
+    </main>
+  </body>
+</html>
