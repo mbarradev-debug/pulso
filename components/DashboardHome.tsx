@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/Button';
 import { Converter } from '@/components/Converter';
+import { ExtensionBanner } from '@/components/ExtensionBanner';
 import { HistoryChart } from '@/components/HistoryChart';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { Skeleton } from '@/components/Skeleton';
@@ -50,6 +51,8 @@ export function DashboardHome() {
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+      <ExtensionBanner />
+
       <header className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
         <div>
           <h1 className="text-lg font-semibold tracking-tight text-foreground">
